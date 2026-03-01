@@ -2,3 +2,8 @@ schematic/*.lck
 schematic/*.zip
 schematic/*/*.zip
 schematic/*.kicad_prl
+schematic/*.gbr
+schematic/*.drl
+schematic/*.lck
+schematic/fp-info-cache
+schematic/#auto_saved_files#
