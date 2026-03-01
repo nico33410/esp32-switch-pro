@@ -878,34 +878,11 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Jumper:Jumper_2_Open"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
+		(symbol "MyLibrary:Deux_pads"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "JP"
-				(at 0 2.794 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Jumper_2_Open"
-				(at 0 -2.286 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
+			(property "Reference" "U"
 				(at 0 0 0)
 				(effects
 					(font
@@ -914,7 +891,15 @@
 					(hide yes)
 				)
 			)
-			(property "Datasheet" "~"
+			(property "Value" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "MyLibrary:Deux pads"
 				(at 0 0 0)
 				(effects
 					(font
@@ -923,7 +908,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Jumper, 2-pole, open"
+			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects
 					(font
@@ -932,7 +917,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "Jumper SPST"
+			(property "Description" ""
 				(at 0 0 0)
 				(effects
 					(font
@@ -941,30 +926,10 @@
 					(hide yes)
 				)
 			)
-			(property "ki_fp_filters" "Jumper* TestPoint*2Pads* TestPoint*Bridge*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "Jumper_2_Open_0_0"
-				(circle
-					(center -2.032 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 2.032 0)
-					(radius 0.508)
+			(symbol "Deux_pads_0_1"
+				(rectangle
+					(start 0 1.27)
+					(end 2.54 -1.27)
 					(stroke
 						(width 0)
 						(type default)
@@ -974,25 +939,11 @@
 					)
 				)
 			)
-			(symbol "Jumper_2_Open_0_1"
-				(arc
-					(start -1.524 1.27)
-					(mid 0 1.778)
-					(end 1.524 1.27)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "Jumper_2_Open_1_1"
-				(pin passive line
-					(at -5.08 0 0)
+			(symbol "Deux_pads_1_1"
+				(pin input line
+					(at -2.54 0 0)
 					(length 2.54)
-					(name "A"
+					(name "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1007,10 +958,10 @@
 						)
 					)
 				)
-				(pin passive line
+				(pin input line
 					(at 5.08 0 180)
 					(length 2.54)
-					(name "B"
+					(name "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -3080,6 +3031,12 @@
 		(uuid "ae2fa5bb-74da-4a54-a004-f7c2bcdbf320")
 	)
 	(junction
+		(at 60.96 31.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "af8cbc94-c450-453d-9a3a-10ec76ad8320")
+	)
+	(junction
 		(at 99.06 33.02)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -3207,6 +3164,16 @@
 	)
 	(wire
 		(pts
+			(xy 27.94 133.35) (xy 30.48 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "01e3d302-0357-48e7-b709-953288550074")
+	)
+	(wire
+		(pts
 			(xy 121.92 27.94) (xy 124.46 27.94)
 		)
 		(stroke
@@ -3284,6 +3251,16 @@
 			(type default)
 		)
 		(uuid "05ef6f35-4550-47af-832d-267ceec6deca")
+	)
+	(wire
+		(pts
+			(xy 19.05 133.35) (xy 20.32 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "06216f17-6792-4662-9e58-9459ac592ea0")
 	)
 	(wire
 		(pts
@@ -3667,6 +3644,16 @@
 	)
 	(wire
 		(pts
+			(xy 19.05 143.51) (xy 20.32 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "35c95333-3874-4e8e-bd77-2ffdaa1d862a")
+	)
+	(wire
+		(pts
 			(xy 161.29 101.6) (xy 38.1 101.6)
 		)
 		(stroke
@@ -3727,23 +3714,13 @@
 	)
 	(wire
 		(pts
-			(xy 148.59 165.1) (xy 151.13 165.1)
+			(xy 148.59 165.1) (xy 152.4 165.1)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "3bfe6d91-b82a-47be-bb9b-b229956a83c0")
-	)
-	(wire
-		(pts
-			(xy 30.48 138.43) (xy 29.21 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3f9beedd-8671-47b0-943d-5c347f34856e")
 	)
 	(wire
 		(pts
@@ -4037,6 +4014,16 @@
 	)
 	(wire
 		(pts
+			(xy 27.94 143.51) (xy 30.48 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5ad1eb33-17e8-4718-bdff-b01310afc08f")
+	)
+	(wire
+		(pts
 			(xy 205.74 110.49) (xy 212.09 110.49)
 		)
 		(stroke
@@ -4054,6 +4041,26 @@
 			(type default)
 		)
 		(uuid "5e3db4ef-b88c-4ab5-ba0b-8e9851a7f239")
+	)
+	(wire
+		(pts
+			(xy 160.02 165.1) (xy 161.29 165.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5f23386c-121a-40a4-9bb0-82544a00cffc")
+	)
+	(wire
+		(pts
+			(xy 60.96 36.83) (xy 62.23 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5f6e5675-17ad-4603-ad3f-101d3208bd46")
 	)
 	(wire
 		(pts
@@ -4197,7 +4204,7 @@
 	)
 	(wire
 		(pts
-			(xy 148.59 176.53) (xy 151.13 176.53)
+			(xy 148.59 176.53) (xy 152.4 176.53)
 		)
 		(stroke
 			(width 0)
@@ -4457,6 +4464,16 @@
 	)
 	(wire
 		(pts
+			(xy 160.02 170.18) (xy 161.29 170.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "87b12b85-c24a-4f29-be1b-5bfc9e0d8838")
+	)
+	(wire
+		(pts
 			(xy 30.48 138.43) (xy 30.48 143.51)
 		)
 		(stroke
@@ -4557,16 +4574,6 @@
 	)
 	(wire
 		(pts
-			(xy 29.21 133.35) (xy 30.48 133.35)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "90a9e887-521b-49ed-841a-09b4cd2ba503")
-	)
-	(wire
-		(pts
 			(xy 212.09 26.67) (xy 194.31 26.67)
 		)
 		(stroke
@@ -4617,13 +4624,13 @@
 	)
 	(wire
 		(pts
-			(xy 30.48 143.51) (xy 29.21 143.51)
+			(xy 27.94 138.43) (xy 30.48 138.43)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "95010793-2233-4879-888b-7a89985192d8")
+		(uuid "989fc228-1659-41e8-b7b3-0b0fc179a441")
 	)
 	(wire
 		(pts
@@ -4747,6 +4754,16 @@
 	)
 	(wire
 		(pts
+			(xy 60.96 41.91) (xy 57.15 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a8e262fc-7b99-4b89-95b5-71f970c22217")
+	)
+	(wire
+		(pts
 			(xy 110.49 180.34) (xy 143.51 180.34)
 		)
 		(stroke
@@ -4754,6 +4771,16 @@
 			(type default)
 		)
 		(uuid "a8f9c620-4817-4ee9-9b60-7203d3749388")
+	)
+	(wire
+		(pts
+			(xy 27.94 148.59) (xy 30.48 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a98466ec-bba3-4d5a-8772-07773ab8d1e8")
 	)
 	(wire
 		(pts
@@ -4767,6 +4794,16 @@
 	)
 	(wire
 		(pts
+			(xy 19.05 148.59) (xy 20.32 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa913a21-ade5-4291-8afd-83f7e4415bb5")
+	)
+	(wire
+		(pts
 			(xy 205.74 67.31) (xy 212.09 67.31)
 		)
 		(stroke
@@ -4774,6 +4811,16 @@
 			(type default)
 		)
 		(uuid "aba85f87-978b-44dc-9514-0390c09fe404")
+	)
+	(wire
+		(pts
+			(xy 62.23 39.37) (xy 60.96 39.37)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "abcfd5f2-835d-457a-9f01-3760ca4e72b8")
 	)
 	(wire
 		(pts
@@ -4814,6 +4861,16 @@
 			(type default)
 		)
 		(uuid "ad935f41-18c2-456d-9aa1-fa4e679708c4")
+	)
+	(wire
+		(pts
+			(xy 57.15 48.26) (xy 58.42 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "adf14605-bd55-4a98-b816-b6b48ffb5fee")
 	)
 	(wire
 		(pts
@@ -4867,7 +4924,7 @@
 	)
 	(wire
 		(pts
-			(xy 148.59 170.18) (xy 151.13 170.18)
+			(xy 148.59 170.18) (xy 152.4 170.18)
 		)
 		(stroke
 			(width 0)
@@ -4927,6 +4984,16 @@
 	)
 	(wire
 		(pts
+			(xy 60.96 39.37) (xy 60.96 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b8583ab5-6ad6-4331-8851-0acf5f977c60")
+	)
+	(wire
+		(pts
 			(xy 69.85 95.25) (xy 39.37 95.25)
 		)
 		(stroke
@@ -4957,7 +5024,17 @@
 	)
 	(wire
 		(pts
-			(xy 39.37 31.75) (xy 87.63 31.75)
+			(xy 57.15 41.91) (xy 57.15 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bcf1b8ad-7ef6-462c-9f36-e7e1d4cc0243")
+	)
+	(wire
+		(pts
+			(xy 39.37 31.75) (xy 60.96 31.75)
 		)
 		(stroke
 			(width 0)
@@ -5014,6 +5091,16 @@
 			(type default)
 		)
 		(uuid "c37904e5-69df-488c-bf89-491105f58a9b")
+	)
+	(wire
+		(pts
+			(xy 60.96 31.75) (xy 60.96 36.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c3b34eac-a5f9-4b4e-a252-8326296946dd")
 	)
 	(wire
 		(pts
@@ -5197,16 +5284,6 @@
 	)
 	(wire
 		(pts
-			(xy 30.48 154.94) (xy 29.21 154.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d4ed2553-0952-4eef-9e12-fac97bc7d3d5")
-	)
-	(wire
-		(pts
 			(xy 111.76 132.08) (xy 111.76 86.36)
 		)
 		(stroke
@@ -5294,6 +5371,16 @@
 			(type default)
 		)
 		(uuid "da4b77bc-6a3e-48aa-bf95-f4eda0decb82")
+	)
+	(wire
+		(pts
+			(xy 27.7373 154.94) (xy 30.48 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "da4f0880-a199-42be-b97d-39611f60eb57")
 	)
 	(wire
 		(pts
@@ -5397,16 +5484,6 @@
 	)
 	(wire
 		(pts
-			(xy 30.48 148.59) (xy 29.21 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e18a96ac-5e6d-43b7-af03-06a8e91daa6b")
-	)
-	(wire
-		(pts
 			(xy 86.36 74.93) (xy 86.36 44.45)
 		)
 		(stroke
@@ -5454,6 +5531,26 @@
 			(type default)
 		)
 		(uuid "e51ec765-229b-4c57-a65b-af4843151272")
+	)
+	(wire
+		(pts
+			(xy 19.05 138.43) (xy 20.32 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e60312e9-3f18-4557-b1a2-07827a1bc65c")
+	)
+	(wire
+		(pts
+			(xy 160.02 160.02) (xy 161.29 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e82b7ffd-88cc-4f87-8c89-04dffa6b8bbb")
 	)
 	(wire
 		(pts
@@ -5517,6 +5614,16 @@
 	)
 	(wire
 		(pts
+			(xy 160.02 176.53) (xy 161.29 176.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ee388ba0-23d5-4bb3-bc3f-105ee82f2305")
+	)
+	(wire
+		(pts
 			(xy 156.21 138.43) (xy 212.09 138.43)
 		)
 		(stroke
@@ -5534,6 +5641,16 @@
 			(type default)
 		)
 		(uuid "f104c83e-eadd-4856-b8ef-3b5893e7fa2d")
+	)
+	(wire
+		(pts
+			(xy 60.96 31.75) (xy 87.63 31.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f11bde31-798e-4fe9-8b38-e8081bbbe129")
 	)
 	(wire
 		(pts
@@ -5577,7 +5694,7 @@
 	)
 	(wire
 		(pts
-			(xy 151.13 160.02) (xy 148.59 160.02)
+			(xy 148.59 160.02) (xy 152.4 160.02)
 		)
 		(stroke
 			(width 0)
@@ -5634,6 +5751,16 @@
 			(type default)
 		)
 		(uuid "fa7063ed-c55e-422f-aad9-b7d0ae42ee7b")
+	)
+	(wire
+		(pts
+			(xy 19.05 154.94) (xy 20.1173 154.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fab995bf-8f85-42e7-83a2-03e1ed426df6")
 	)
 	(wire
 		(pts
@@ -5883,6 +6010,74 @@
 		)
 	)
 	(symbol
+		(lib_id "MyLibrary:Deux_pads")
+		(at 154.94 165.1 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0aef2bce-d7a4-469e-8864-b040e6dc92a8")
+		(property "Reference" "Led8"
+			(at 154.94 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "Bouton 2"
+			(at 156.21 161.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MyLibrary:Deux pads"
+			(at 154.94 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 154.94 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 154.94 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "55ea3c97-56a3-43d5-aa87-b8aa40959f6c")
+		)
+		(pin "1"
+			(uuid "c0ac5c30-f09e-48a0-aaa6-f4730ac4f682")
+		)
+		(instances
+			(project "esp32-switch"
+				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
+					(reference "Led8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "MyLibrary:lipoRiderPlus")
 		(at 22.86 36.83 0)
 		(unit 1)
@@ -5971,144 +6166,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 156.21 170.18 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "2b2bc036-b042-499b-929a-d7b40857d7a7")
-		(property "Reference" "JP8"
-			(at 156.21 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "Bouton 3"
-			(at 156.21 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_2Pads_Pitch2.54mm_Drill0.8mm"
-			(at 156.21 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 156.21 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 156.21 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "e05c0317-fc51-4a63-8287-4b84fd3dd620")
-		)
-		(pin "1"
-			(uuid "0c15d650-4569-481f-b5d8-4aa054e7c8cb")
-		)
-		(instances
-			(project "esp32-switch"
-				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
-					(reference "JP8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 24.13 154.94 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "2c9b441b-e963-4f1d-9165-20b1530d7c50")
-		(property "Reference" "JP5"
-			(at 24.13 148.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "Led 1"
-			(at 24.13 151.13 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_2Pads_Pitch2.54mm_Drill0.8mm"
-			(at 24.13 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 24.13 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 24.13 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "f06a85d4-33b7-40ba-8f7e-9cbc00101e7a")
-		)
-		(pin "1"
-			(uuid "8e82650e-18df-407d-9764-2dd1458ca465")
-		)
-		(instances
-			(project ""
-				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
-					(reference "JP5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Connector:Conn_01x02_Socket")
 		(at 63.5 45.72 0)
 		(unit 1)
@@ -6173,6 +6230,75 @@
 			(project "esp32-switch"
 				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
 					(reference "J17")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "MyLibrary:Deux_pads")
+		(at 25.4 143.51 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4568ba56-f135-4f9a-9daa-04f0c1ea324a")
+		(property "Reference" "Led2"
+			(at 25.4 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "Led 2"
+			(at 24.13 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MyLibrary:Deux pads"
+			(at 25.4 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 25.4 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 25.4 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "8d4554d5-7185-4c30-b276-64d6e7d2a8a5")
+		)
+		(pin "1"
+			(uuid "fdde56d4-dd4c-4a66-868e-7e0626b5829e")
+		)
+		(instances
+			(project "esp32-switch"
+				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
+					(reference "Led2")
 					(unit 1)
 				)
 			)
@@ -6407,17 +6533,16 @@
 		)
 	)
 	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 24.13 143.51 0)
+		(lib_id "MyLibrary:Deux_pads")
+		(at 154.94 176.53 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "9f6e7214-8a50-4edc-91c5-27358895e332")
-		(property "Reference" "JP3"
-			(at 24.13 137.16 0)
+		(uuid "6046acf7-569b-43ec-9e3f-2e6624a7a91b")
+		(property "Reference" "Led6"
+			(at 154.94 176.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6425,25 +6550,16 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "Led 2"
-			(at 24.13 139.7 0)
+		(property "Value" "Bouton 4"
+			(at 156.21 172.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_2Pads_Pitch2.54mm_Drill0.8mm"
-			(at 24.13 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 24.13 143.51 0)
+		(property "Footprint" "MyLibrary:Deux pads"
+			(at 154.94 176.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6451,8 +6567,17 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 24.13 143.51 0)
+		(property "Datasheet" ""
+			(at 154.94 176.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 154.94 176.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6461,32 +6586,100 @@
 			)
 		)
 		(pin "2"
-			(uuid "a90f4b0b-b7ee-4a74-bbd0-1df92d31c24c")
+			(uuid "520462b4-a2ab-4640-ad7a-9d69165f73c5")
 		)
 		(pin "1"
-			(uuid "490c6566-b908-446a-ad92-0c256a036998")
+			(uuid "b2d78a49-2812-4665-9e7d-65035b8d189f")
 		)
 		(instances
-			(project ""
+			(project "esp32-switch"
 				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
-					(reference "JP3")
+					(reference "Led6")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 24.13 138.43 0)
+		(lib_id "MyLibrary:Deux_pads")
+		(at 154.94 160.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a72f11aa-bdb5-49d8-bc87-e89fa3f55502")
-		(property "Reference" "JP2"
-			(at 24.13 132.08 0)
+		(uuid "8163636b-42de-4ea8-8feb-9bcc36c91467")
+		(property "Reference" "Led9"
+			(at 154.94 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "Bouton 1"
+			(at 156.21 156.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MyLibrary:Deux pads"
+			(at 154.94 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 154.94 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 154.94 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "ea8dcfd4-3d64-4ec6-9214-483ae7c4bdf4")
+		)
+		(pin "1"
+			(uuid "923f9775-39bb-4d15-a211-451157178bcf")
+		)
+		(instances
+			(project "esp32-switch"
+				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
+					(reference "Led9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "MyLibrary:Deux_pads")
+		(at 25.4 138.43 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "82a300a8-7ea8-4433-94a4-22123ff3ff15")
+		(property "Reference" "Led1"
+			(at 25.4 138.43 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6502,8 +6695,78 @@
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_2Pads_Pitch2.54mm_Drill0.8mm"
-			(at 24.13 138.43 0)
+		(property "Footprint" "MyLibrary:Deux pads"
+			(at 25.4 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 25.4 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 25.4 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "bb3bdc5e-361b-4b78-be55-f4cad529e49e")
+		)
+		(pin "1"
+			(uuid "af94ec47-fbff-4d8a-add7-a84883c00b55")
+		)
+		(instances
+			(project "esp32-switch"
+				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
+					(reference "Led1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x02_Socket")
+		(at 67.31 39.37 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "8c617818-5fe5-435f-a876-8614e8377d8e")
+		(property "Reference" "J8"
+			(at 68.58 39.3701 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Batterie"
+			(at 68.58 36.8301 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Connector_AMASS:AMASS_XT30U-F_1x02_P5.0mm_Vertical"
+			(at 67.31 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6512,7 +6775,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 24.13 138.43 0)
+			(at 67.31 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6520,8 +6783,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 24.13 138.43 0)
+		(property "Description" "Generic connector, single row, 01x02, script generated"
+			(at 67.31 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6530,15 +6793,153 @@
 			)
 		)
 		(pin "1"
-			(uuid "652160fa-876d-41a0-bcf0-345587636a99")
+			(uuid "078fc441-2ab4-4927-b682-d46af732d77d")
 		)
 		(pin "2"
-			(uuid "ef464b17-0081-4c28-ba75-ae283a41dbf9")
+			(uuid "04bc8405-d475-4ed1-87f5-d46d16abddf2")
+		)
+		(instances
+			(project "esp32-switch"
+				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
+					(reference "J8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "MyLibrary:Deux_pads")
+		(at 25.1973 154.94 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "919dc068-8ade-4cb0-ab70-aa0b64a13c4d")
+		(property "Reference" "Led5"
+			(at 25.1973 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "Led 1"
+			(at 23.9273 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MyLibrary:Deux pads"
+			(at 25.1973 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 25.1973 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 25.1973 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "312c9de6-437f-41d4-99ab-0e52894279b7")
+		)
+		(pin "1"
+			(uuid "a70e5b26-0a26-4940-b6c8-1fea97d936ea")
+		)
+		(instances
+			(project "esp32-switch"
+				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
+					(reference "Led5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "MyLibrary:Deux_pads")
+		(at 25.4 133.35 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a8737d02-0454-4aaf-98e4-a3f18b080c54")
+		(property "Reference" "Led3"
+			(at 25.4 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "Led 3"
+			(at 24.13 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MyLibrary:Deux pads"
+			(at 25.4 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 25.4 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 25.4 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "b61f40d2-f623-472c-9136-f47be4b497d1")
+		)
+		(pin "1"
+			(uuid "2921e015-3347-4ea0-9d46-735d7a8ce663")
 		)
 		(instances
 			(project ""
 				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
-					(reference "JP2")
+					(reference "Led3")
 					(unit 1)
 				)
 			)
@@ -7244,16 +7645,16 @@
 		)
 	)
 	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 156.21 165.1 0)
+		(lib_id "MyLibrary:Deux_pads")
+		(at 154.94 170.18 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "d5b59506-5f0d-4718-b282-a604e5895769")
-		(property "Reference" "JP7"
-			(at 156.21 158.75 0)
+		(uuid "d1cbd7c2-73e8-4772-9ea5-508723f95d1d")
+		(property "Reference" "Led7"
+			(at 154.94 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7261,25 +7662,16 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "Bouton 2"
-			(at 155.702 162.306 0)
+		(property "Value" "Bouton 3"
+			(at 156.21 166.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_2Pads_Pitch2.54mm_Drill0.8mm"
-			(at 156.21 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 156.21 165.1 0)
+		(property "Footprint" "MyLibrary:Deux pads"
+			(at 154.94 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7287,8 +7679,17 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 156.21 165.1 0)
+		(property "Datasheet" ""
+			(at 154.94 170.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 154.94 170.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7297,15 +7698,15 @@
 			)
 		)
 		(pin "2"
-			(uuid "e4e8e549-447d-44b0-af45-210fbe4770d0")
+			(uuid "1caddc20-b9f1-407f-b20e-660c002ae95f")
 		)
 		(pin "1"
-			(uuid "537cdb61-09c4-426d-ba9e-06eccbaa1095")
+			(uuid "f355200e-104d-4119-9db9-1d97ccf0fac0")
 		)
 		(instances
 			(project "esp32-switch"
 				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
-					(reference "JP7")
+					(reference "Led7")
 					(unit 1)
 				)
 			)
@@ -7400,6 +7801,75 @@
 		)
 	)
 	(symbol
+		(lib_id "MyLibrary:Deux_pads")
+		(at 25.4 148.59 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "db74fdfc-5d3f-4689-b9b4-759fb5fb3eb6")
+		(property "Reference" "Led4"
+			(at 25.4 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "Led home"
+			(at 24.13 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "MyLibrary:Deux pads"
+			(at 25.4 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 25.4 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 25.4 148.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "914f7fe2-a0bb-4585-9687-91ddf72b0aa2")
+		)
+		(pin "1"
+			(uuid "28fa26bc-ae52-4b26-bf04-80fe3d79350e")
+		)
+		(instances
+			(project "esp32-switch"
+				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
+					(reference "Led4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 49.53 58.42 0)
 		(unit 1)
@@ -7464,282 +7934,6 @@
 			(project "esp32-switch"
 				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
 					(reference "R2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 156.21 176.53 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e2cffd49-51e5-40d7-ae95-56428b0f65ae")
-		(property "Reference" "JP9"
-			(at 156.21 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "Bouton 4"
-			(at 156.21 172.72 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_2Pads_Pitch2.54mm_Drill0.8mm"
-			(at 156.21 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 156.21 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 156.21 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "a287f8c4-212f-4787-8475-4c8bf911112a")
-		)
-		(pin "1"
-			(uuid "e3ebaeba-0020-4328-a402-92a52c8448db")
-		)
-		(instances
-			(project "esp32-switch"
-				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
-					(reference "JP9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 156.21 160.02 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e824dd4f-55f3-49e0-a568-51342980a4ed")
-		(property "Reference" "JP6"
-			(at 156.21 153.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "Bouton 1"
-			(at 156.21 156.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_2Pads_Pitch2.54mm_Drill0.8mm"
-			(at 156.21 160.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 156.21 160.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 156.21 160.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "3e730e00-c0fa-4578-b90d-7d897b87bf87")
-		)
-		(pin "1"
-			(uuid "3575e49c-f4d8-4084-9552-093136c1faf6")
-		)
-		(instances
-			(project ""
-				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
-					(reference "JP6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 24.13 133.35 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f30aa9d8-3f58-4b85-ab1a-895f04c09139")
-		(property "Reference" "JP1"
-			(at 24.13 127 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "Led 3"
-			(at 24.13 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_2Pads_Pitch2.54mm_Drill0.8mm"
-			(at 24.13 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 24.13 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 24.13 133.35 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "d06590e0-9568-431e-a3cc-6140703619ae")
-		)
-		(pin "2"
-			(uuid "817ca4b8-3c87-4a8d-b488-fa0ae2e1c27d")
-		)
-		(instances
-			(project ""
-				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
-					(reference "JP1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Jumper:Jumper_2_Open")
-		(at 24.13 148.59 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f56b41c9-63af-453a-b369-e498069a35b9")
-		(property "Reference" "JP4"
-			(at 24.13 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "Led home"
-			(at 24.13 144.78 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_2Pads_Pitch2.54mm_Drill0.8mm"
-			(at 24.13 148.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 24.13 148.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Jumper, 2-pole, open"
-			(at 24.13 148.59 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "ff3eab7f-6274-42a4-abe9-06a05f191136")
-		)
-		(pin "2"
-			(uuid "7d9a5e63-ef5d-4591-b545-90739f68c4bd")
-		)
-		(instances
-			(project ""
-				(path "/e3c75245-0a54-4dd7-901e-3668eebcfbc1"
-					(reference "JP4")
 					(unit 1)
 				)
 			)
