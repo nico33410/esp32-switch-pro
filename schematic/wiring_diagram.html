@@ -29,6 +29,7 @@
   .pin-i2c   { background: #1a0a2a; color: #c084fc; border: 1px solid #6b21a8; }
   .pin-mcp   { background: #0a1a2a; color: #7dd3fc; border: 1px solid #075985; }
   .pin-pwr   { background: #2a0a0a; color: #f87171; border: 1px solid #991b1b; }
+  .pin-5v    { background: #2a1a0a; color: #fb923c; border: 1px solid #9a3412; }
   .pin-gnd   { background: #111; color: #9ca3af; border: 1px solid #374151; }
   .pin-pwm   { background: #1a100a; color: #fb923c; border: 1px solid #9a3412; }
   .label { font-weight: 600; color: #cbd5e1; }
@@ -47,6 +48,23 @@
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .badge-new { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; background: #1a2a0a; color: #4ade80; border: 1px solid #166534; border-radius: 3px; padding: 1px 5px; margin-left: 6px; vertical-align: middle; }
   footer { margin-top: 24px; font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; color: #2a3a5a; letter-spacing: 2px; }
+
+  /* Transistor diagram */
+  .transistor-diagram {
+    background: #0d1524;
+    border: 1px solid #1e2d4a;
+    border-radius: 6px;
+    padding: 14px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    line-height: 1.9;
+    margin-top: 10px;
+  }
+  .transistor-diagram .hi { color: #7df9ff; }
+  .transistor-diagram .pwr { color: #fb923c; }
+  .transistor-diagram .gnd { color: #9ca3af; }
+  .transistor-diagram .gpio { color: #4ade80; }
 </style>
 </head>
 <body>
@@ -85,8 +103,8 @@
             <tr><th>PIN MCP</th><th>DEFINE</th><th>BOUTON</th></tr>
             <tr><td><span class="pin pin-mcp">GPB0</span></td><td class="note">MCP_BTN_MINUS</td><td class="label">−</td></tr>
             <tr><td><span class="pin pin-mcp">GPB1</span></td><td class="note">MCP_BTN_PLUS</td><td class="label">+</td></tr>
-            <tr><td><span class="pin pin-mcp">GPB2</span></td><td class="note">MCP_DPAD_LEFT</td><td class="label">◀ D-PAD LEFT <span class="badge-new">MÀJ</span></td></tr>
-            <tr><td><span class="pin pin-mcp">GPB3</span></td><td class="note">MCP_DPAD_RIGHT</td><td class="label">▶ D-PAD RIGHT <span class="badge-new">MÀJ</span></td></tr>
+            <tr><td><span class="pin pin-mcp">GPB2</span></td><td class="note">MCP_DPAD_LEFT</td><td class="label">◀ D-PAD LEFT</td></tr>
+            <tr><td><span class="pin pin-mcp">GPB3</span></td><td class="note">MCP_DPAD_RIGHT</td><td class="label">▶ D-PAD RIGHT</td></tr>
             <tr><td><span class="pin pin-mcp">GPB4</span></td><td class="note">MCP_BTN_HOME</td><td class="label">🏠 HOME</td></tr>
             <tr><td><span class="pin pin-mcp">GPB5</span></td><td class="note">MCP_BTN_CAPTURE</td><td class="label">⬤ CAPTURE</td></tr>
             <tr><td><span class="pin pin-mcp">GPB6</span></td><td class="note">MCP_DPAD_UP</td><td class="label">▲ D-PAD UP</td></tr>
@@ -97,7 +115,8 @@
       <div class="note-box">
         <b>Câblage MCP23017 :</b> SDA → GPIO21 &nbsp;|&nbsp; SCL → GPIO22 &nbsp;|&nbsp; VDD (pin9) → 3.3V &nbsp;|&nbsp; VSS (pin10) → GND<br>
         RESET (pin18) → 3.3V &nbsp;|&nbsp; A0/A1/A2 (pin15-16-17) → GND (adresse 0x20)<br>
-        Tous boutons : une borne sur GPx, l'autre sur <b>GND</b> — Pull-up interne activé par le code
+        Pull-up I²C <b>intégrés sur le module</b> (résistances 472 = 4.7kΩ vers VCC)<br>
+        Tous boutons : une borne sur GPx, l'autre sur <b>GND</b>
       </div>
     </div>
   </div>
@@ -110,7 +129,7 @@
       <span class="chip c-green">INPUT_PULLUP</span>
     </div>
     <div class="card-body">
-      <div class="section-title">Clics joysticks <span class="badge-new">MÀJ</span></div>
+      <div class="section-title">Clics joysticks</div>
       <table>
         <tr><th>GPIO</th><th>DEFINE</th><th>FONCTION</th></tr>
         <tr><td><span class="pin pin-gpio">GPIO 25</span></td><td class="note">LSTICK_BTN_PIN</td><td class="label">🕹️ Clic gauche</td></tr>
@@ -124,7 +143,7 @@
         <tr><td><span class="pin pin-gpio">GPIO 18</span></td><td class="note">BTN_RIGHT_SWAP_PIN</td><td class="label">Swap X/Y D</td></tr>
         <tr><td><span class="pin pin-gpio">GPIO 19</span></td><td class="note">BTN_RIGHT_INVERT_PIN</td><td class="label">Inv. sens D</td></tr>
       </table>
-      <div class="note-box">Boutons vers <b>GND</b> — pull-up interne</div>
+      <div class="note-box">Boutons vers <b>GND</b> — pull-up interne ESP32</div>
     </div>
   </div>
 
@@ -152,7 +171,7 @@
         <tr><td><span class="pin pin-pwr">3.3V</span></td><td colspan="2" class="note">VCC joystick</td></tr>
         <tr><td><span class="pin pin-gnd">GND</span></td><td colspan="2" class="note">GND joystick</td></tr>
       </table>
-      <div class="warn-box">⚠ GPIO 34/35 : input only, pas de pull-up<br>⚠ ADC2 (GPIO25/26) inutilisable en analogique avec BLE actif</div>
+      <div class="warn-box">⚠ GPIO 34/35 : input only, pas de pull-up<br>⚠ ADC2 (GPIO25/26) inutilisable en analogique avec BLE</div>
     </div>
   </div>
 
@@ -177,56 +196,73 @@
         <tr><th>GPIO</th><th>DEFINE</th><th>LED</th></tr>
         <tr><td><span class="pin pin-pwm">GPIO 15</span></td><td class="note">LED_HOME_PIN</td><td class="label">HOME (PWM)</td></tr>
       </table>
-      <div class="note-box">Résistance <b>220Ω</b> en série sur chaque LED<br>Cathode (−) → GND</div>
+      <div class="note-box">
+        LEDs avec <b>résistance intégrée</b> 3-6V<br>
+        Anode (+) → GPIO &nbsp;|&nbsp; Cathode (−) → GND
+      </div>
     </div>
   </div>
 
-  <!-- Vibration + Batterie -->
+  <!-- Vibration -->
   <div class="card">
     <div class="card-header c-orange">
       <span class="icon">📳</span>
-      <span class="title">Vibration &amp; Batterie</span>
-      <span class="chip c-orange">PWM + ADC</span>
+      <span class="title">Vibration — BC547</span>
+      <span class="chip c-orange">PWM GPIO 4 → 5V</span>
     </div>
     <div class="card-body">
-      <div class="section-title">Moteur vibrant</div>
       <table>
-        <tr><th>GPIO</th><th>DEFINE</th><th>SIGNAL</th></tr>
-        <tr><td><span class="pin pin-pwm">GPIO 4</span></td><td class="note">VIBRATION_PIN</td><td class="label">PWM → transistor</td></tr>
+        <tr><th>PATTE BC547</th><th>CONNEXION</th></tr>
+        <tr><td class="label">Base (centre)</td><td><span class="pin pin-gpio">GPIO 4</span> via R 1kΩ</td></tr>
+        <tr><td class="label">Collecteur (gauche)</td><td>Moteur → <span class="pin pin-5v">5V</span></td></tr>
+        <tr><td class="label">Émetteur (droite)</td><td><span class="pin pin-gnd">GND</span></td></tr>
       </table>
-      <div class="note-box">GPIO4 → R 1kΩ → Base NPN (2N2222)<br>Collecteur → Moteur → VCC<br>Émetteur → GND<br>Diode 1N4007 en parallèle moteur</div>
+      <div class="transistor-diagram">
+        <span class="pwr">5V</span> ──────┬──────────┐<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hi">Cathode</span>&nbsp;&nbsp;&nbsp;[<span class="hi">Moteur</span>]<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1N4007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hi">Anode</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└──────────┤<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hi">Collecteur</span><br>
+        <span class="gpio">GPIO4</span>─R1kΩ─<span class="hi">Base</span>&nbsp;[BC547]<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hi">Émetteur</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="gnd">GND</span>
+      </div>
+      <div class="note-box" style="margin-top:10px">
+        BC547 vue face plate : <b>C — B — E</b><br>
+        Diode 1N4007 en <b>parallèle</b> sur le moteur<br>
+        Cathode (bague) → <b>5V</b> &nbsp;|&nbsp; Anode → Collecteur
+      </div>
+    </div>
+  </div>
+
+  <!-- Batterie + I2C -->
+  <div class="card">
+    <div class="card-header c-purple">
+      <span class="icon">🔋</span>
+      <span class="title">Batterie &amp; I²C</span>
+      <span class="chip c-purple">ADC + BUS</span>
+    </div>
+    <div class="card-body">
       <div class="section-title">Batterie LiPo</div>
       <table>
         <tr><th>GPIO</th><th>DEFINE</th><th>SIGNAL</th></tr>
         <tr><td><span class="pin pin-adc">GPIO 36</span></td><td class="note">BATTERY_PIN</td><td class="label">Mesure tension</td></tr>
       </table>
-      <div class="note-box">Diviseur 1:2 — R1 10kΩ + R2 10kΩ<br>4.2V LiPo → 2.1V sur GPIO36<br>⚠ GPIO 36 : input only</div>
-    </div>
-  </div>
-
-  <!-- I2C -->
-  <div class="card">
-    <div class="card-header c-purple">
-      <span class="icon">🟣</span>
-      <span class="title">I²C &amp; Alimentation MCP</span>
-      <span class="chip c-purple">SDA/SCL</span>
-    </div>
-    <div class="card-body">
-      <div class="section-title">Bus I²C ESP32 → MCP23017</div>
+      <div class="note-box">
+        Diviseur 1:2<br>
+        VBAT → R1 10kΩ → GPIO36 → R2 10kΩ → GND<br>
+        4.2V LiPo → 2.1V sur GPIO36<br>
+        ⚠ GPIO 36 : input only
+      </div>
+      <div class="section-title">Bus I²C</div>
       <table>
-        <tr><th>GPIO</th><th>DEFINE</th><th>→ PIN MCP</th></tr>
+        <tr><th>GPIO</th><th>DEFINE</th><th>→ MCP</th></tr>
         <tr><td><span class="pin pin-i2c">GPIO 21</span></td><td class="note">I2C_SDA</td><td class="label">SDA → pin 13</td></tr>
         <tr><td><span class="pin pin-i2c">GPIO 22</span></td><td class="note">I2C_SCL</td><td class="label">SCL → pin 12</td></tr>
       </table>
-      <div class="section-title">Alimentation MCP23017</div>
-      <table>
-        <tr><th>PIN MCP</th><th></th><th>CONNEXION</th></tr>
-        <tr><td class="note">VDD (pin 9)</td><td>→</td><td><span class="pin pin-pwr">3.3V</span></td></tr>
-        <tr><td class="note">VSS (pin 10)</td><td>→</td><td><span class="pin pin-gnd">GND</span></td></tr>
-        <tr><td class="note">RESET (pin 18)</td><td>→</td><td><span class="pin pin-pwr">3.3V</span></td></tr>
-        <tr><td class="note">A0/A1/A2 (15-16-17)</td><td>→</td><td><span class="pin pin-gnd">GND</span></td></tr>
-      </table>
-      <div class="note-box">Pull-up <b>4.7kΩ</b> sur SDA et SCL → 3.3V</div>
+      <div class="note-box">Pull-up I²C <b>intégrés sur le module</b> MCP23017</div>
     </div>
   </div>
 
@@ -239,7 +275,7 @@
     <div class="card-body">
       <div class="two-col">
         <table>
-          <tr><th>GPIO</th><th>DEFINE (config.h)</th><th>FONCTION</th><th>TYPE</th></tr>
+          <tr><th>GPIO</th><th>DEFINE</th><th>FONCTION</th><th>TYPE</th></tr>
           <tr><td><span class="pin pin-i2c">GPIO 21</span></td><td class="note">I2C_SDA</td><td class="label">I²C SDA → MCP23017</td><td class="note">I2C</td></tr>
           <tr><td><span class="pin pin-i2c">GPIO 22</span></td><td class="note">I2C_SCL</td><td class="label">I²C SCL → MCP23017</td><td class="note">I2C</td></tr>
           <tr><td><span class="pin pin-gpio">GPIO 25</span></td><td class="note">LSTICK_BTN_PIN</td><td class="label">🕹️ Clic joystick gauche</td><td class="note">INPUT_PULLUP</td></tr>
@@ -252,7 +288,7 @@
           <tr><td><span class="pin pin-adc">GPIO 35</span></td><td class="note">STICK_LY_PIN</td><td class="label">Joystick gauche Y</td><td class="note">ADC1_CH7</td></tr>
         </table>
         <table>
-          <tr><th>GPIO</th><th>DEFINE (config.h)</th><th>FONCTION</th><th>TYPE</th></tr>
+          <tr><th>GPIO</th><th>DEFINE</th><th>FONCTION</th><th>TYPE</th></tr>
           <tr><td><span class="pin pin-adc">GPIO 32</span></td><td class="note">STICK_RX_PIN</td><td class="label">Joystick droit X</td><td class="note">ADC1_CH4</td></tr>
           <tr><td><span class="pin pin-adc">GPIO 33</span></td><td class="note">STICK_RY_PIN</td><td class="label">Joystick droit Y</td><td class="note">ADC1_CH5</td></tr>
           <tr><td><span class="pin pin-gpio">GPIO 27</span></td><td class="note">LED_1</td><td class="label">LED joueur 1</td><td class="note">OUTPUT</td></tr>
@@ -260,7 +296,7 @@
           <tr><td><span class="pin pin-gpio">GPIO 12</span></td><td class="note">LED_3</td><td class="label">LED joueur 3</td><td class="note">OUTPUT</td></tr>
           <tr><td><span class="pin pin-gpio">GPIO 13</span></td><td class="note">LED_4</td><td class="label">LED joueur 4</td><td class="note">OUTPUT</td></tr>
           <tr><td><span class="pin pin-pwm">GPIO 15</span></td><td class="note">LED_HOME_PIN</td><td class="label">LED HOME</td><td class="note">PWM</td></tr>
-          <tr><td><span class="pin pin-pwm">GPIO 4</span></td><td class="note">VIBRATION_PIN</td><td class="label">Moteur vibrant</td><td class="note">PWM</td></tr>
+          <tr><td><span class="pin pin-pwm">GPIO 4</span></td><td class="note">VIBRATION_PIN</td><td class="label">Moteur vibrant → BC547</td><td class="note">PWM</td></tr>
           <tr><td><span class="pin pin-adc">GPIO 36</span></td><td class="note">BATTERY_PIN</td><td class="label">Mesure batterie</td><td class="note">ADC1_CH0</td></tr>
         </table>
       </div>
@@ -280,16 +316,16 @@
         <tr><td><span class="pin pin-i2c">I²C</span></td><td class="note">Bus données I²C</td></tr>
         <tr><td><span class="pin pin-mcp">MCP</span></td><td class="note">Pin MCP23017</td></tr>
         <tr><td><span class="pin pin-pwm">PWM</span></td><td class="note">Sortie analogWrite</td></tr>
-        <tr><td><span class="pin pin-pwr">3.3V</span></td><td class="note">Alimentation</td></tr>
+        <tr><td><span class="pin pin-pwr">3.3V</span></td><td class="note">Alimentation 3.3V</td></tr>
+        <tr><td><span class="pin pin-5v">5V</span></td><td class="note">Alimentation 5V (LiPo Rider)</td></tr>
         <tr><td><span class="pin pin-gnd">GND</span></td><td class="note">Masse commune</td></tr>
-        <tr><td><span class="badge-new">MÀJ</span></td><td class="note">Modifié vs version précédente</td></tr>
       </table>
     </div>
   </div>
 
 </div>
 
-<footer>// ESP32 PRO CONTROLLER v3.0 — D-PAD COMPLET SUR MCP23017 — CLICS JOYSTICK SUR GPIO 25/26</footer>
+<footer>// ESP32 PRO CONTROLLER v3.0 — LEDs résistance intégrée — BC547 low-side switch — Pull-up I²C sur module MCP</footer>
 
 </body>
 </html>
