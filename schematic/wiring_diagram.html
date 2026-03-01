@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>ESP32 Pro Controller — Schéma de câblage</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0e1a; color: #e0e8ff; font-family: 'Rajdhani', sans-serif; min-height: 100vh; padding: 24px; }
+  h1 { font-size: 2rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #7df9ff; text-shadow: 0 0 18px #7df9ff88; margin-bottom: 4px; }
+  .subtitle { font-family: 'Share Tech Mono', monospace; color: #5a6a8a; font-size: 0.85rem; margin-bottom: 28px; letter-spacing: 2px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1300px; }
+  .card { background: #111827; border: 1px solid #1e2d4a; border-radius: 10px; overflow: hidden; }
+  .card.wide { grid-column: span 2; }
+  .card.full { grid-column: span 3; }
+  .card-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #1e2d4a; }
+  .card-header .icon { font-size: 1.2rem; }
+  .card-header .title { font-size: 0.95rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+  .card-header .chip { margin-left: auto; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px; border: 1px solid; }
+  .card-body { padding: 14px 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; letter-spacing: 2px; color: #5a6a8a; text-align: left; padding: 4px 8px 8px; border-bottom: 1px solid #1e2d4a; }
+  td { padding: 5px 8px; vertical-align: middle; }
+  tr:not(:last-child) td { border-bottom: 1px solid #0d1524; }
+  tr:hover td { background: #0d1a2e; }
+  .pin { font-family: 'Share Tech Mono', monospace; font-size: 0.78rem; padding: 2px 7px; border-radius: 4px; display: inline-block; white-space: nowrap; }
+  .pin-gpio  { background: #0f2a1a; color: #4ade80; border: 1px solid #166534; }
+  .pin-adc   { background: #1a1a0a; color: #facc15; border: 1px solid #713f12; }
+  .pin-i2c   { background: #1a0a2a; color: #c084fc; border: 1px solid #6b21a8; }
+  .pin-mcp   { background: #0a1a2a; color: #7dd3fc; border: 1px solid #075985; }
+  .pin-pwr   { background: #2a0a0a; color: #f87171; border: 1px solid #991b1b; }
+  .pin-gnd   { background: #111; color: #9ca3af; border: 1px solid #374151; }
+  .pin-pwm   { background: #1a100a; color: #fb923c; border: 1px solid #9a3412; }
+  .label { font-weight: 600; color: #cbd5e1; }
+  .note  { font-size: 0.78rem; color: #5a6a8a; font-family: 'Share Tech Mono', monospace; }
+  .section-title { font-size: 0.72rem; letter-spacing: 3px; text-transform: uppercase; color: #5a6a8a; font-family: 'Share Tech Mono', monospace; margin: 12px 0 6px; padding-bottom: 4px; border-bottom: 1px dashed #1e2d4a; }
+  .section-title:first-child { margin-top: 0; }
+  .c-blue   { color: #7dd3fc; border-color: #0369a1; background: #061522; }
+  .c-green  { color: #4ade80; border-color: #166534; background: #061a0e; }
+  .c-purple { color: #c084fc; border-color: #6b21a8; background: #130822; }
+  .c-yellow { color: #facc15; border-color: #713f12; background: #1a1302; }
+  .c-orange { color: #fb923c; border-color: #9a3412; background: #1a0d02; }
+  .c-teal   { color: #7df9ff; border-color: #0e7490; background: #041618; }
+  .note-box { background: #0d1524; border: 1px solid #1e2d4a; border-left: 3px solid #7df9ff; border-radius: 6px; padding: 10px 14px; font-size: 0.82rem; color: #94a3b8; font-family: 'Share Tech Mono', monospace; line-height: 1.7; margin-top: 10px; }
+  .note-box b { color: #7df9ff; }
+  .warn-box { background: #1a1000; border: 1px solid #713f12; border-left: 3px solid #facc15; border-radius: 6px; padding: 10px 14px; font-size: 0.82rem; color: #d97706; font-family: 'Share Tech Mono', monospace; line-height: 1.7; margin-top: 10px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .badge-new { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; background: #1a2a0a; color: #4ade80; border: 1px solid #166534; border-radius: 3px; padding: 1px 5px; margin-left: 6px; vertical-align: middle; }
+  footer { margin-top: 24px; font-family: 'Share Tech Mono', monospace; font-size: 0.72rem; color: #2a3a5a; letter-spacing: 2px; }
+</style>
+</head>
+<body>
+
+<h1>ESP32 Pro Controller</h1>
+<div class="subtitle">// SCHÉMA DE CÂBLAGE COMPLET — v3.0</div>
+
+<div class="grid">
+
+  <!-- MCP23017 -->
+  <div class="card wide">
+    <div class="card-header c-blue">
+      <span class="icon">🔵</span>
+      <span class="title">MCP23017</span>
+      <span class="chip c-blue">I²C @ 0x20 — 16 BOUTONS</span>
+    </div>
+    <div class="card-body">
+      <div class="two-col">
+        <div>
+          <div class="section-title">Port A — GPA0→GPA7</div>
+          <table>
+            <tr><th>PIN MCP</th><th>DEFINE</th><th>BOUTON</th></tr>
+            <tr><td><span class="pin pin-mcp">GPA0</span></td><td class="note">MCP_BTN_A</td><td class="label">A</td></tr>
+            <tr><td><span class="pin pin-mcp">GPA1</span></td><td class="note">MCP_BTN_B</td><td class="label">B</td></tr>
+            <tr><td><span class="pin pin-mcp">GPA2</span></td><td class="note">MCP_BTN_X</td><td class="label">X</td></tr>
+            <tr><td><span class="pin pin-mcp">GPA3</span></td><td class="note">MCP_BTN_Y</td><td class="label">Y</td></tr>
+            <tr><td><span class="pin pin-mcp">GPA4</span></td><td class="note">MCP_BTN_L</td><td class="label">L</td></tr>
+            <tr><td><span class="pin pin-mcp">GPA5</span></td><td class="note">MCP_BTN_R</td><td class="label">R</td></tr>
+            <tr><td><span class="pin pin-mcp">GPA6</span></td><td class="note">MCP_BTN_ZL</td><td class="label">ZL</td></tr>
+            <tr><td><span class="pin pin-mcp">GPA7</span></td><td class="note">MCP_BTN_ZR</td><td class="label">ZR</td></tr>
+          </table>
+        </div>
+        <div>
+          <div class="section-title">Port B — GPB0→GPB7</div>
+          <table>
+            <tr><th>PIN MCP</th><th>DEFINE</th><th>BOUTON</th></tr>
+            <tr><td><span class="pin pin-mcp">GPB0</span></td><td class="note">MCP_BTN_MINUS</td><td class="label">−</td></tr>
+            <tr><td><span class="pin pin-mcp">GPB1</span></td><td class="note">MCP_BTN_PLUS</td><td class="label">+</td></tr>
+            <tr><td><span class="pin pin-mcp">GPB2</span></td><td class="note">MCP_DPAD_LEFT</td><td class="label">◀ D-PAD LEFT <span class="badge-new">MÀJ</span></td></tr>
+            <tr><td><span class="pin pin-mcp">GPB3</span></td><td class="note">MCP_DPAD_RIGHT</td><td class="label">▶ D-PAD RIGHT <span class="badge-new">MÀJ</span></td></tr>
+            <tr><td><span class="pin pin-mcp">GPB4</span></td><td class="note">MCP_BTN_HOME</td><td class="label">🏠 HOME</td></tr>
+            <tr><td><span class="pin pin-mcp">GPB5</span></td><td class="note">MCP_BTN_CAPTURE</td><td class="label">⬤ CAPTURE</td></tr>
+            <tr><td><span class="pin pin-mcp">GPB6</span></td><td class="note">MCP_DPAD_UP</td><td class="label">▲ D-PAD UP</td></tr>
+            <tr><td><span class="pin pin-mcp">GPB7</span></td><td class="note">MCP_DPAD_DOWN</td><td class="label">▼ D-PAD DOWN</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="note-box">
+        <b>Câblage MCP23017 :</b> SDA → GPIO21 &nbsp;|&nbsp; SCL → GPIO22 &nbsp;|&nbsp; VDD (pin9) → 3.3V &nbsp;|&nbsp; VSS (pin10) → GND<br>
+        RESET (pin18) → 3.3V &nbsp;|&nbsp; A0/A1/A2 (pin15-16-17) → GND (adresse 0x20)<br>
+        Tous boutons : une borne sur GPx, l'autre sur <b>GND</b> — Pull-up interne activé par le code
+      </div>
+    </div>
+  </div>
+
+  <!-- GPIO Directs -->
+  <div class="card">
+    <div class="card-header c-green">
+      <span class="icon">🟢</span>
+      <span class="title">GPIO Directs ESP32</span>
+      <span class="chip c-green">INPUT_PULLUP</span>
+    </div>
+    <div class="card-body">
+      <div class="section-title">Clics joysticks <span class="badge-new">MÀJ</span></div>
+      <table>
+        <tr><th>GPIO</th><th>DEFINE</th><th>FONCTION</th></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 25</span></td><td class="note">LSTICK_BTN_PIN</td><td class="label">🕹️ Clic gauche</td></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 26</span></td><td class="note">RSTICK_BTN_PIN</td><td class="label">🕹️ Clic droit</td></tr>
+      </table>
+      <div class="section-title">Config joysticks (optionnel)</div>
+      <table>
+        <tr><th>GPIO</th><th>DEFINE</th><th>FONCTION</th></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 16</span></td><td class="note">BTN_LEFT_SWAP_PIN</td><td class="label">Swap X/Y G</td></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 17</span></td><td class="note">BTN_LEFT_INVERT_PIN</td><td class="label">Inv. sens G</td></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 18</span></td><td class="note">BTN_RIGHT_SWAP_PIN</td><td class="label">Swap X/Y D</td></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 19</span></td><td class="note">BTN_RIGHT_INVERT_PIN</td><td class="label">Inv. sens D</td></tr>
+      </table>
+      <div class="note-box">Boutons vers <b>GND</b> — pull-up interne</div>
+    </div>
+  </div>
+
+  <!-- Joysticks -->
+  <div class="card">
+    <div class="card-header c-yellow">
+      <span class="icon">🟡</span>
+      <span class="title">Joysticks Analogiques</span>
+      <span class="chip c-yellow">ADC1 uniquement</span>
+    </div>
+    <div class="card-body">
+      <div class="section-title">Joystick Gauche</div>
+      <table>
+        <tr><th>GPIO</th><th>DEFINE</th><th>SIGNAL</th></tr>
+        <tr><td><span class="pin pin-adc">GPIO 34</span></td><td class="note">STICK_LX_PIN</td><td class="label">LX — ADC1_CH6</td></tr>
+        <tr><td><span class="pin pin-adc">GPIO 35</span></td><td class="note">STICK_LY_PIN</td><td class="label">LY — ADC1_CH7</td></tr>
+        <tr><td><span class="pin pin-pwr">3.3V</span></td><td colspan="2" class="note">VCC joystick</td></tr>
+        <tr><td><span class="pin pin-gnd">GND</span></td><td colspan="2" class="note">GND joystick</td></tr>
+      </table>
+      <div class="section-title">Joystick Droit</div>
+      <table>
+        <tr><th>GPIO</th><th>DEFINE</th><th>SIGNAL</th></tr>
+        <tr><td><span class="pin pin-adc">GPIO 32</span></td><td class="note">STICK_RX_PIN</td><td class="label">RX — ADC1_CH4</td></tr>
+        <tr><td><span class="pin pin-adc">GPIO 33</span></td><td class="note">STICK_RY_PIN</td><td class="label">RY — ADC1_CH5</td></tr>
+        <tr><td><span class="pin pin-pwr">3.3V</span></td><td colspan="2" class="note">VCC joystick</td></tr>
+        <tr><td><span class="pin pin-gnd">GND</span></td><td colspan="2" class="note">GND joystick</td></tr>
+      </table>
+      <div class="warn-box">⚠ GPIO 34/35 : input only, pas de pull-up<br>⚠ ADC2 (GPIO25/26) inutilisable en analogique avec BLE actif</div>
+    </div>
+  </div>
+
+  <!-- LEDs -->
+  <div class="card">
+    <div class="card-header c-teal">
+      <span class="icon">💡</span>
+      <span class="title">LEDs</span>
+      <span class="chip c-teal">GPIO + PWM</span>
+    </div>
+    <div class="card-body">
+      <div class="section-title">LEDs Joueur (1-4)</div>
+      <table>
+        <tr><th>GPIO</th><th>DEFINE</th><th>LED</th></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 27</span></td><td class="note">LED_1</td><td class="label">LED 1</td></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 14</span></td><td class="note">LED_2</td><td class="label">LED 2</td></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 12</span></td><td class="note">LED_3</td><td class="label">LED 3</td></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 13</span></td><td class="note">LED_4</td><td class="label">LED 4</td></tr>
+      </table>
+      <div class="section-title">LED HOME</div>
+      <table>
+        <tr><th>GPIO</th><th>DEFINE</th><th>LED</th></tr>
+        <tr><td><span class="pin pin-pwm">GPIO 15</span></td><td class="note">LED_HOME_PIN</td><td class="label">HOME (PWM)</td></tr>
+      </table>
+      <div class="note-box">Résistance <b>220Ω</b> en série sur chaque LED<br>Cathode (−) → GND</div>
+    </div>
+  </div>
+
+  <!-- Vibration + Batterie -->
+  <div class="card">
+    <div class="card-header c-orange">
+      <span class="icon">📳</span>
+      <span class="title">Vibration &amp; Batterie</span>
+      <span class="chip c-orange">PWM + ADC</span>
+    </div>
+    <div class="card-body">
+      <div class="section-title">Moteur vibrant</div>
+      <table>
+        <tr><th>GPIO</th><th>DEFINE</th><th>SIGNAL</th></tr>
+        <tr><td><span class="pin pin-pwm">GPIO 4</span></td><td class="note">VIBRATION_PIN</td><td class="label">PWM → transistor</td></tr>
+      </table>
+      <div class="note-box">GPIO4 → R 1kΩ → Base NPN (2N2222)<br>Collecteur → Moteur → VCC<br>Émetteur → GND<br>Diode 1N4007 en parallèle moteur</div>
+      <div class="section-title">Batterie LiPo</div>
+      <table>
+        <tr><th>GPIO</th><th>DEFINE</th><th>SIGNAL</th></tr>
+        <tr><td><span class="pin pin-adc">GPIO 36</span></td><td class="note">BATTERY_PIN</td><td class="label">Mesure tension</td></tr>
+      </table>
+      <div class="note-box">Diviseur 1:2 — R1 10kΩ + R2 10kΩ<br>4.2V LiPo → 2.1V sur GPIO36<br>⚠ GPIO 36 : input only</div>
+    </div>
+  </div>
+
+  <!-- I2C -->
+  <div class="card">
+    <div class="card-header c-purple">
+      <span class="icon">🟣</span>
+      <span class="title">I²C &amp; Alimentation MCP</span>
+      <span class="chip c-purple">SDA/SCL</span>
+    </div>
+    <div class="card-body">
+      <div class="section-title">Bus I²C ESP32 → MCP23017</div>
+      <table>
+        <tr><th>GPIO</th><th>DEFINE</th><th>→ PIN MCP</th></tr>
+        <tr><td><span class="pin pin-i2c">GPIO 21</span></td><td class="note">I2C_SDA</td><td class="label">SDA → pin 13</td></tr>
+        <tr><td><span class="pin pin-i2c">GPIO 22</span></td><td class="note">I2C_SCL</td><td class="label">SCL → pin 12</td></tr>
+      </table>
+      <div class="section-title">Alimentation MCP23017</div>
+      <table>
+        <tr><th>PIN MCP</th><th></th><th>CONNEXION</th></tr>
+        <tr><td class="note">VDD (pin 9)</td><td>→</td><td><span class="pin pin-pwr">3.3V</span></td></tr>
+        <tr><td class="note">VSS (pin 10)</td><td>→</td><td><span class="pin pin-gnd">GND</span></td></tr>
+        <tr><td class="note">RESET (pin 18)</td><td>→</td><td><span class="pin pin-pwr">3.3V</span></td></tr>
+        <tr><td class="note">A0/A1/A2 (15-16-17)</td><td>→</td><td><span class="pin pin-gnd">GND</span></td></tr>
+      </table>
+      <div class="note-box">Pull-up <b>4.7kΩ</b> sur SDA et SCL → 3.3V</div>
+    </div>
+  </div>
+
+  <!-- Récap complet -->
+  <div class="card full">
+    <div class="card-header c-teal">
+      <span class="icon">📋</span>
+      <span class="title">Récapitulatif complet — tous GPIO ESP32</span>
+    </div>
+    <div class="card-body">
+      <div class="two-col">
+        <table>
+          <tr><th>GPIO</th><th>DEFINE (config.h)</th><th>FONCTION</th><th>TYPE</th></tr>
+          <tr><td><span class="pin pin-i2c">GPIO 21</span></td><td class="note">I2C_SDA</td><td class="label">I²C SDA → MCP23017</td><td class="note">I2C</td></tr>
+          <tr><td><span class="pin pin-i2c">GPIO 22</span></td><td class="note">I2C_SCL</td><td class="label">I²C SCL → MCP23017</td><td class="note">I2C</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 25</span></td><td class="note">LSTICK_BTN_PIN</td><td class="label">🕹️ Clic joystick gauche</td><td class="note">INPUT_PULLUP</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 26</span></td><td class="note">RSTICK_BTN_PIN</td><td class="label">🕹️ Clic joystick droit</td><td class="note">INPUT_PULLUP</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 16</span></td><td class="note">BTN_LEFT_SWAP_PIN</td><td class="label">Config swap X/Y gauche</td><td class="note">INPUT_PULLUP</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 17</span></td><td class="note">BTN_LEFT_INVERT_PIN</td><td class="label">Config invert gauche</td><td class="note">INPUT_PULLUP</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 18</span></td><td class="note">BTN_RIGHT_SWAP_PIN</td><td class="label">Config swap X/Y droit</td><td class="note">INPUT_PULLUP</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 19</span></td><td class="note">BTN_RIGHT_INVERT_PIN</td><td class="label">Config invert droit</td><td class="note">INPUT_PULLUP</td></tr>
+          <tr><td><span class="pin pin-adc">GPIO 34</span></td><td class="note">STICK_LX_PIN</td><td class="label">Joystick gauche X</td><td class="note">ADC1_CH6</td></tr>
+          <tr><td><span class="pin pin-adc">GPIO 35</span></td><td class="note">STICK_LY_PIN</td><td class="label">Joystick gauche Y</td><td class="note">ADC1_CH7</td></tr>
+        </table>
+        <table>
+          <tr><th>GPIO</th><th>DEFINE (config.h)</th><th>FONCTION</th><th>TYPE</th></tr>
+          <tr><td><span class="pin pin-adc">GPIO 32</span></td><td class="note">STICK_RX_PIN</td><td class="label">Joystick droit X</td><td class="note">ADC1_CH4</td></tr>
+          <tr><td><span class="pin pin-adc">GPIO 33</span></td><td class="note">STICK_RY_PIN</td><td class="label">Joystick droit Y</td><td class="note">ADC1_CH5</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 27</span></td><td class="note">LED_1</td><td class="label">LED joueur 1</td><td class="note">OUTPUT</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 14</span></td><td class="note">LED_2</td><td class="label">LED joueur 2</td><td class="note">OUTPUT</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 12</span></td><td class="note">LED_3</td><td class="label">LED joueur 3</td><td class="note">OUTPUT</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 13</span></td><td class="note">LED_4</td><td class="label">LED joueur 4</td><td class="note">OUTPUT</td></tr>
+          <tr><td><span class="pin pin-pwm">GPIO 15</span></td><td class="note">LED_HOME_PIN</td><td class="label">LED HOME</td><td class="note">PWM</td></tr>
+          <tr><td><span class="pin pin-pwm">GPIO 4</span></td><td class="note">VIBRATION_PIN</td><td class="label">Moteur vibrant</td><td class="note">PWM</td></tr>
+          <tr><td><span class="pin pin-adc">GPIO 36</span></td><td class="note">BATTERY_PIN</td><td class="label">Mesure batterie</td><td class="note">ADC1_CH0</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Légende -->
+  <div class="card">
+    <div class="card-header" style="background:#0a0e1a; border-color:#1e2d4a">
+      <span class="icon">🗺️</span>
+      <span class="title" style="color:#94a3b8">Légende</span>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr><td><span class="pin pin-gpio">GPIO</span></td><td class="note">Digital input/output</td></tr>
+        <tr><td><span class="pin pin-adc">ADC</span></td><td class="note">Entrée analogique 12-bit</td></tr>
+        <tr><td><span class="pin pin-i2c">I²C</span></td><td class="note">Bus données I²C</td></tr>
+        <tr><td><span class="pin pin-mcp">MCP</span></td><td class="note">Pin MCP23017</td></tr>
+        <tr><td><span class="pin pin-pwm">PWM</span></td><td class="note">Sortie analogWrite</td></tr>
+        <tr><td><span class="pin pin-pwr">3.3V</span></td><td class="note">Alimentation</td></tr>
+        <tr><td><span class="pin pin-gnd">GND</span></td><td class="note">Masse commune</td></tr>
+        <tr><td><span class="badge-new">MÀJ</span></td><td class="note">Modifié vs version précédente</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>// ESP32 PRO CONTROLLER v3.0 — D-PAD COMPLET SUR MCP23017 — CLICS JOYSTICK SUR GPIO 25/26</footer>
+
+</body>
+</html>
