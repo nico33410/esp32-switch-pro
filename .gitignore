@@ -1,2 +1,4 @@
 schematic/*.lck
 schematic/*.zip
+schematic/*/*.zip
+schematic/*.kicad_prl
