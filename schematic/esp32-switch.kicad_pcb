@@ -7833,6 +7833,42 @@
 		(layer "Edge.Cuts")
 		(uuid "a27e4dd5-ecef-45c0-b195-31c23977a9bc")
 	)
+	(gr_text "LH"
+		(at 229 80 0)
+		(layer "F.SilkS")
+		(uuid "0521739a-fdbe-4df6-8095-9c8f24c61e3c")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "BDI"
+		(at 228 58 0)
+		(layer "F.SilkS")
+		(uuid "2a64d24f-ca2c-42d9-9f25-822892862ec5")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "L4"
+		(at 229 107 0)
+		(layer "F.SilkS")
+		(uuid "3fe2da4d-1b75-4ee9-9f0d-9eb12ed79574")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
 	(gr_text "Joy D"
 		(at 189 77 90)
 		(layer "F.SilkS")
@@ -7842,6 +7878,78 @@
 				(size 1 1)
 				(thickness 0.15)
 			)
+		)
+	)
+	(gr_text "L1"
+		(at 229 85 0)
+		(layer "F.SilkS")
+		(uuid "6fef800f-a646-495a-a318-71ee56f8bb8a")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "L3"
+		(at 229 103 0)
+		(layer "F.SilkS")
+		(uuid "7354ed2a-8699-4c2f-bf59-4086bc40eba2")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "BGS"
+		(at 228 74 0)
+		(layer "F.SilkS")
+		(uuid "c981310d-4822-460f-b9cd-88d2834625a5")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "L2"
+		(at 229 94 0)
+		(layer "F.SilkS")
+		(uuid "d7bffd7e-70c6-42fc-9d83-fa81a8c2fa16")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "BDS"
+		(at 228 62 0)
+		(layer "F.SilkS")
+		(uuid "e83e3762-f623-494f-9033-c7521a905ce4")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "BGI"
+		(at 228 69 0)
+		(layer "F.SilkS")
+		(uuid "f0d1ee02-1ff8-48b3-97a4-9fbff33e0f51")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
 		)
 	)
 	(segment
