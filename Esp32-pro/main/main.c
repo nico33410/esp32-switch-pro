@@ -2,11 +2,14 @@
  * main.c — Pro Controller ESP32
  *
  * Initialise le hardware, enregistre les callbacks, démarre le BT.
- * Pour adapter au câblage, modifiez uniquement config.h
+ * GPIO 16 actif au démarrage → mode configuration web (sans Bluetooth).
  *
  * Compatible ESP-IDF v4.4.x (API ADC legacy)
  */
 #include "bt_types.h"
+#include "btn_mapping.h"
+#include "web_config.h"
+#include <stdlib.h>
 
 static const char* TAG = "main";
 
@@ -17,25 +20,9 @@ uint8_t g_battery_level = 6;
 void (*g_btn_cb)(void)   = NULL;
 void (*g_stick_cb)(void) = NULL;
 
-// ── Déclarations forward ─────────────────────────────────────
-rb_err_t settings_load(void);
-rb_err_t settings_save(void);
-rb_err_t settings_save_pairing(uint8_t*);
-rb_err_t bt_start(void);
-void     input_calibrate_sticks(void);
-void     input_fill_long(uint8_t*);
-void     report_set_mode(uint8_t);
-void     report_subcmd_init(uint8_t, uint8_t, uint8_t);
-void     report_subcmd_send(void);
-void     report_sub_devinfo(void);
-void     report_sub_triggertime(uint16_t);
-void     report_send_standard_once(void);
-void     spi_handle_read(uint8_t, uint8_t, uint8_t, uint8_t*, uint16_t*);
-void     comms_handle(uint8_t*, uint16_t);
-void     comms_handle_subcmd(uint8_t, uint8_t*, uint16_t);
-
 // ── MCP23017 ──────────────────────────────────────────────────
 #include "driver/i2c.h"
+#include "esp_adc_cal.h"
 
 #define MCP_IODIRA  0x00
 #define MCP_IODIRB  0x01
@@ -44,24 +31,41 @@ void     comms_handle_subcmd(uint8_t, uint8_t*, uint16_t);
 #define MCP_GPIOA   0x12
 #define MCP_GPIOB   0x13
 
-static void mcp_write(uint8_t reg, uint8_t val) {
+static esp_err_t mcp_write(uint8_t reg, uint8_t val) {
     uint8_t buf[2] = {reg, val};
-    i2c_master_write_to_device(I2C_NUM_0, MCP23017_ADDR, buf, 2,
-                               pdMS_TO_TICKS(10));
+    return i2c_master_write_to_device(I2C_NUM_0, MCP23017_ADDR, buf, 2,
+                                      pdMS_TO_TICKS(10));
 }
 
-static uint8_t mcp_read(uint8_t reg) {
-    uint8_t val = 0xFF;
-    i2c_master_write_read_device(I2C_NUM_0, MCP23017_ADDR,
-                                  &reg, 1, &val, 1, pdMS_TO_TICKS(10));
-    return val;
+static esp_err_t mcp_read(uint8_t reg, uint8_t *val) {
+    return i2c_master_write_read_device(I2C_NUM_0, MCP23017_ADDR,
+                                        &reg, 1, val, 1, pdMS_TO_TICKS(10));
 }
 
 // Retourne les 16 bits du MCP, 1 = bouton enfoncé (inversé car actif bas)
 static uint16_t mcp_read_buttons(void) {
-    uint8_t a = mcp_read(MCP_GPIOA);
-    uint8_t b = mcp_read(MCP_GPIOB);
+    uint8_t a, b;
+    if (mcp_read(MCP_GPIOA, &a) != ESP_OK || mcp_read(MCP_GPIOB, &b) != ESP_OK)
+        return 0;
     return ~((uint16_t)(b << 8) | a);
+}
+
+static void read_phys_inputs(uint16_t *mcp, bool *l3, bool *r3) {
+    *mcp = mcp_read_buttons();
+    *l3  = !gpio_get_level(PIN_LSTICK_BTN);
+    *r3  = !gpio_get_level(PIN_RSTICK_BTN);
+}
+
+// ── GPIO 16 — détection mode config au boot ──────────────────
+static bool config_mode_at_boot(void) {
+    gpio_config_t cfg = {
+        .pin_bit_mask = 1ULL << PIN_CONFIG_MODE,
+        .mode         = GPIO_MODE_INPUT,
+        .pull_up_en   = GPIO_PULLUP_ENABLE,
+    };
+    gpio_config(&cfg);
+    vTaskDelay(pdMS_TO_TICKS(50));
+    return !gpio_get_level(PIN_CONFIG_MODE);
 }
 
 // ── LEDs ──────────────────────────────────────────────────────
@@ -83,6 +87,16 @@ static void leds_flash(int n, int ms) {
     }
 }
 
+static void leds_config_mode_blink(void *arg) {
+    (void)arg;
+    while (1) {
+        leds_set_player(0x0A);
+        vTaskDelay(pdMS_TO_TICKS(300));
+        leds_set_player(0x00);
+        vTaskDelay(pdMS_TO_TICKS(300));
+    }
+}
+
 // ── Vibration ────────────────────────────────────────────────
 static volatile uint32_t g_vib_stop_at = 0;
 
@@ -100,40 +114,35 @@ void vibration_start(uint32_t ms) {
     g_vib_stop_at = xTaskGetTickCount() * portTICK_PERIOD_MS + ms;
 }
 
+void vibration_stop(void) {
+    gpio_set_level(PIN_VIBRATION, 0);
+    g_vib_stop_at = 0;
+}
+
 // ── Batterie ─────────────────────────────────────────────────
-static uint8_t battery_read(void) {
+static uint32_t battery_voltage_mv(void) {
     int raw = adc1_get_raw(ADC_BATTERY);
-    if (raw > BAT_ADC_FULL) return 8;
-    if (raw > BAT_ADC_HIGH) return 6;
-    if (raw > BAT_ADC_MID)  return 4;
-    if (raw > BAT_ADC_LOW)  return 2;
+    esp_adc_cal_characteristics_t chars;
+    esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_12, ADC_WIDTH_BIT_12,
+                             1100, &chars);
+    return esp_adc_cal_raw_to_voltage(raw, &chars) * BAT_DIVIDER_NUMERATOR;
+}
+
+static uint8_t battery_read(void) {
+    uint32_t mv = battery_voltage_mv();
+    if (mv >= BAT_MV_FULL) return 8;
+    if (mv >= BAT_MV_HIGH) return 6;
+    if (mv >= BAT_MV_MID)  return 4;
+    if (mv >= BAT_MV_LOW)  return 2;
     return 1;
 }
 
 // ── Callbacks hardware ────────────────────────────────────────
 static void cb_buttons(void) {
-    uint16_t b = mcp_read_buttons();
-
-    g_buttons.b_right   = (b >> BTN_A)          & 1;
-    g_buttons.b_down    = (b >> BTN_B)          & 1;
-    g_buttons.b_up      = (b >> BTN_X)          & 1;
-    g_buttons.b_left    = (b >> BTN_Y)          & 1;
-    g_buttons.t_l       = (b >> BTN_L)          & 1;
-    g_buttons.t_r       = (b >> BTN_R)          & 1;
-    g_buttons.t_zl      = (b >> BTN_ZL)         & 1;
-    g_buttons.t_zr      = (b >> BTN_ZR)         & 1;
-    g_buttons.b_select  = (b >> BTN_MINUS)      & 1;
-    g_buttons.b_start   = (b >> BTN_PLUS)       & 1;
-    g_buttons.b_home    = (b >> BTN_HOME)       & 1;
-    g_buttons.b_capture = (b >> BTN_CAPTURE)    & 1;
-    g_buttons.d_up      = (b >> BTN_DPAD_UP)    & 1;
-    g_buttons.d_down    = (b >> BTN_DPAD_DOWN)  & 1;
-    g_buttons.d_left    = (b >> BTN_DPAD_LEFT)  & 1;
-    g_buttons.d_right   = (b >> BTN_DPAD_RIGHT) & 1;
-
-    g_buttons.sb_left   = !gpio_get_level(PIN_LSTICK_BTN);
-    g_buttons.sb_right  = !gpio_get_level(PIN_RSTICK_BTN);
-
+    uint16_t mcp;
+    bool l3, r3;
+    read_phys_inputs(&mcp, &l3, &r3);
+    mapping_apply(mcp, l3, r3);
     vibration_tick();
 }
 
@@ -143,22 +152,17 @@ static void cb_sticks(void) {
     int rx = adc1_get_raw(ADC_RX);
     int ry = adc1_get_raw(ADC_RY);
 
-    // Boutons de configuration axes (actif bas, pull-up interne)
-    bool swap_l   = !gpio_get_level(PIN_LSTICK_SWAP);
-    bool invert_l = !gpio_get_level(PIN_LSTICK_INV);
-    bool swap_r   = !gpio_get_level(PIN_RSTICK_SWAP);
-    bool invert_r = !gpio_get_level(PIN_RSTICK_INV);
+    uint16_t ulx = (uint16_t)lx;
+    uint16_t uly = (uint16_t)ly;
+    uint16_t urx = (uint16_t)rx;
+    uint16_t ury = (uint16_t)ry;
+    input_center_sticks(&ulx, &uly, &urx, &ury);
 
-    if (swap_l)   { int t = lx; lx = ly; ly = t; }
-    if (invert_l) { lx = 4095 - lx; }
-    if (swap_r)   { int t = rx; rx = ry; ry = t; }
-    if (invert_r) { rx = 4095 - rx; }
-
-    #define DZ(v, c) (abs((v)-(c)) < STICK_DEADZONE ? (c) : (v))
-    g_sticks.lsx = (uint16_t)DZ(lx, 2048);
-    g_sticks.lsy = (uint16_t)DZ(ly, 2048);
-    g_sticks.rsx = (uint16_t)DZ(rx, 2048);
-    g_sticks.rsy = (uint16_t)DZ(ry, 2048);
+    mapping_apply_sticks(&ulx, &uly, &urx, &ury);
+    g_sticks.lsx = ulx;
+    g_sticks.lsy = uly;
+    g_sticks.rsx = urx;
+    g_sticks.rsy = ury;
 }
 
 // ── Init hardware ─────────────────────────────────────────────
@@ -176,10 +180,13 @@ static void hw_init(void) {
     ESP_ERROR_CHECK(i2c_driver_install(I2C_NUM_0, I2C_MODE_MASTER, 0, 0, 0));
 
     // MCP23017 : tout en entrée + pull-up
-    mcp_write(MCP_IODIRA, 0xFF);
-    mcp_write(MCP_IODIRB, 0xFF);
-    mcp_write(MCP_GPPUA,  0xFF);
-    mcp_write(MCP_GPPUB,  0xFF);
+    ESP_ERROR_CHECK(mcp_write(MCP_IODIRA, 0xFF));
+    ESP_ERROR_CHECK(mcp_write(MCP_IODIRB, 0xFF));
+    ESP_ERROR_CHECK(mcp_write(MCP_GPPUA,  0xFF));
+    ESP_ERROR_CHECK(mcp_write(MCP_GPPUB,  0xFF));
+    uint8_t mcp_probe;
+    ESP_ERROR_CHECK(mcp_read(MCP_GPIOA, &mcp_probe));
+    (void)mcp_probe;
     ESP_LOGI(TAG, "MCP23017 OK (addr=0x%02X)", MCP23017_ADDR);
 
     // Clics joystick
@@ -189,15 +196,6 @@ static void hw_init(void) {
         .pull_up_en   = GPIO_PULLUP_ENABLE,
     };
     ESP_ERROR_CHECK(gpio_config(&btn_cfg));
-
-    // Boutons de configuration axes (swap / invert) — GPIO 16-19
-    gpio_config_t cfg_btn = {
-        .pin_bit_mask = (1ULL << PIN_LSTICK_SWAP) | (1ULL << PIN_LSTICK_INV)
-                      | (1ULL << PIN_RSTICK_SWAP) | (1ULL << PIN_RSTICK_INV),
-        .mode         = GPIO_MODE_INPUT,
-        .pull_up_en   = GPIO_PULLUP_ENABLE,
-    };
-    ESP_ERROR_CHECK(gpio_config(&cfg_btn));
 
     // LEDs
     gpio_config_t led_cfg = {
@@ -227,22 +225,15 @@ static void hw_init(void) {
              adc1_get_raw(ADC_LX), adc1_get_raw(ADC_LY),
              adc1_get_raw(ADC_RX), adc1_get_raw(ADC_RY));
 
-    // Batterie
     g_battery_level = battery_read();
-    ESP_LOGI(TAG, "Batterie — raw:%d niveau:%d/8",
-             adc1_get_raw(ADC_BATTERY), g_battery_level);
+    ESP_LOGI(TAG, "Batterie — %lumV niveau:%d/8", battery_voltage_mv(), g_battery_level);
 }
 
 // ── Point d'entrée ────────────────────────────────────────────
 void app_main(void) {
     ESP_LOGI(TAG, "====== ESP32 Pro Controller ======");
-    ESP_LOGI(TAG, "Couleurs G(%02X,%02X,%02X) D(%02X,%02X,%02X) Btn(%02X,%02X,%02X)",
-             COLOR_BODY_L_R, COLOR_BODY_L_G, COLOR_BODY_L_B,
-             COLOR_BODY_R_R, COLOR_BODY_R_G, COLOR_BODY_R_B,
-             COLOR_BTN_R,    COLOR_BTN_G,    COLOR_BTN_B);
 
-    hw_init();
-    leds_flash(3, 120);
+    bool config_mode = config_mode_at_boot();
 
     // NVS
     esp_err_t nvs_err = nvs_flash_init();
@@ -253,14 +244,34 @@ void app_main(void) {
     }
     ESP_ERROR_CHECK(nvs_err);
 
+    hw_init();
+    btn_mapping_set_phys_reader(read_phys_inputs);
+    mapping_load();
+
+    if (config_mode) {
+        ESP_LOGI(TAG, "=== MODE CONFIGURATION (GPIO 16) ===");
+        ESP_LOGI(TAG, "WiFi: %s / %s → http://192.168.4.1", WIFI_AP_SSID, WIFI_AP_PASS);
+        leds_flash(5, 80);
+        xTaskCreate(leds_config_mode_blink, "cfg_led", 2048, NULL, 1, NULL);
+        web_config_run();   // ne retourne pas
+        return;
+    }
+
+    ESP_LOGI(TAG, "Profil actif: %s",
+             mapping_store()->names[mapping_active_index()]);
+    ESP_LOGI(TAG, "Couleurs G(%02X,%02X,%02X) D(%02X,%02X,%02X) Btn(%02X,%02X,%02X)",
+             COLOR_BODY_L_R, COLOR_BODY_L_G, COLOR_BODY_L_B,
+             COLOR_BODY_R_R, COLOR_BODY_R_G, COLOR_BODY_R_B,
+             COLOR_BTN_R,    COLOR_BTN_G,    COLOR_BTN_B);
+
+    leds_flash(3, 120);
     settings_load();
+    input_capture_stick_centers();
     input_calibrate_sticks();
 
-    // Enregistrement des callbacks hardware
     g_btn_cb   = cb_buttons;
     g_stick_cb = cb_sticks;
 
-    // Démarrage Bluetooth
     if (bt_start() != RB_OK) {
         ESP_LOGE(TAG, "BT start FAILED");
         return;
@@ -269,10 +280,9 @@ void app_main(void) {
     leds_set_player(g_settings.player_led_mask);
     led_home(true);
 
-    // Boucle principale : mise à jour batterie toutes les 30s
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(30000));
         g_battery_level = battery_read();
-        ESP_LOGI(TAG, "Batterie: %d/8", g_battery_level);
+        ESP_LOGI(TAG, "Batterie: %lumV niveau:%d/8", battery_voltage_mv(), g_battery_level);
     }
 }

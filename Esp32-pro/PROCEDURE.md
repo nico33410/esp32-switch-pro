@@ -4,7 +4,7 @@
 
 - **VS Code** installé
 - **Extension ESP-IDF** installée (identifiant : `espressif.esp-idf-vscode-extension`)
-- **ESP-IDF v5.1 ou supérieur** (ce code cible l'API ADC oneshot, disponible dès v5.0)
+- **ESP-IDF v4.4.x** (ce code utilise l'API ADC legacy : `adc1_get_raw`, `adc1_config_width`)
 - **Driver USB** de votre chip UART (CP2102, CH340 ou FTDI selon votre board)
 
 ---
@@ -15,15 +15,18 @@
 2. Chercher **ESP-IDF** → installer l'extension Espressif
 3. Ouvrir la palette de commandes : `Ctrl+Shift+P`
 4. Lancer : **ESP-IDF: Configure ESP-IDF Extension**
-5. Choisir **Express** → sélectionner la version **v5.1** (ou plus récente) → laisser le chemin par défaut → cliquer **Install**
+5. Choisir **Express** → sélectionner la version **v4.4** → laisser le chemin par défaut → cliquer **Install**
 6. Attendre la fin de l'installation (5-15 min selon la connexion)
+
+> **Note** : une migration vers ESP-IDF v5.x nécessiterait de remplacer l'API ADC legacy
+> (`driver/adc.h`) par l'API oneshot (`esp_adc/adc_oneshot.h`).
 
 ---
 
 ## 2. Ouvrir le projet
 
 1. Dans VS Code : **Fichier → Ouvrir le dossier**
-2. Sélectionner le dossier `procon/` (celui qui contient `CMakeLists.txt` et `sdkconfig`)
+2. Sélectionner le dossier `Esp32-pro/` (celui qui contient `CMakeLists.txt` et `sdkconfig`)
 
 ---
 
@@ -119,8 +122,9 @@ Vous devriez voir au démarrage :
 ```
 ====== ESP32 Pro Controller ======
 MCP23017 OK (addr=0x20)
-Sticks — LX:2048 LY:2048 RX:2048 RY:2048
-Batterie — niveau:6/8
+Sticks — LX:... LY:... RX:... RY:...
+Stick centers — L:...,... R:...,...
+Batterie — ...mV niveau:6/8
 En attente d'appairage — Switch → Manettes → Changer l'ordre
 ```
 
@@ -139,6 +143,24 @@ La prochaine fois, la reconnexion est automatique.
 
 ---
 
+## 8b. Mode configuration (GPIO 16)
+
+Pour reprogrammer les touches sans recompiler :
+
+1. **Éteindre** l'ESP32
+2. **Maintenir GPIO 16 à GND** (bouton ou cavalier) pendant la mise sous tension
+3. Les LEDs clignotent en alternance → mode configuration actif
+4. Se connecter au WiFi **`ProCon-Setup`** (mot de passe par défaut : **`ChangeThis-42`**)
+5. Ouvrir **`http://192.168.4.1`** dans un navigateur
+6. Configurer le mapping, créer des profils de jeu, ou tout remettre par défaut
+7. **Redémarrer sans GPIO 16** → la manette utilise le profil actif en Bluetooth
+
+Jusqu'à **4 profils** peuvent être stockés en mémoire flash (NVS).
+
+> Changez ce mot de passe dans `main/config.h` avant une utilisation hors d'un environnement maîtrisé.
+
+---
+
 ## 9. Commande tout-en-un (build + flash + monitor)
 
 ```bash
@@ -151,10 +173,9 @@ idf.py -p COM3 flash monitor
 
 | Symptôme | Cause probable | Solution |
 |---|---|---|
-| `fatal error: esp_adc/adc_oneshot.h: No such file` | IDF < v5.0 | Mettre à jour vers IDF v5.1+ |
+| `fatal error: driver/adc.h: No such file` | IDF v5.x sans compat legacy | Utiliser IDF v4.4.x ou migrer vers l'API ADC oneshot |
 | `error: 'esp32' component not found` | Ancien CMakeLists | Déjà corrigé dans ce projet |
 | `Failed to connect to ESP32` | Mauvais port ou mode boot | Vérifier port, maintenir BOOT |
 | `MCP23017 timeout` | Câblage I2C ou adresse | Vérifier SDA/SCL et A0/A1/A2 → GND |
 | BT non détecté | sdkconfig incomplet | Relancer menuconfig, activer Classic BT + HID |
-| Sticks dérivés | Deadzone trop faible | Augmenter `STICK_DEADZONE` dans `config.h` |
-
+| Sticks dérivés | Stick déplacé pendant la mesure au démarrage, ou deadzone trop faible | Redémarrer sans toucher les sticks, puis augmenter `STICK_DEADZONE` si nécessaire |

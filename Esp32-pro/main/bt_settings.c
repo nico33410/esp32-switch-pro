@@ -16,7 +16,8 @@ static void settings_default(void) {
     g_settings.player_led_mask = 0x01;
     memset(g_settings.bt_host_addr, 0, 6);
 
-    // Calibration ADC 12-bit : min=250, center=1868, max=3920
+    // Valeurs historiques conservées pour la compatibilité NVS. Les centres
+    // effectifs de chaque axe sont désormais mesurés à chaque démarrage.
     g_settings.sx_min    = 0x00FA;
     g_settings.sx_center = 0x0740;
     g_settings.sx_max    = 0x0F47;

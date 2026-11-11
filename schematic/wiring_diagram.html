@@ -135,13 +135,11 @@
         <tr><td><span class="pin pin-gpio">GPIO 25</span></td><td class="note">LSTICK_BTN_PIN</td><td class="label">🕹️ Clic gauche</td></tr>
         <tr><td><span class="pin pin-gpio">GPIO 26</span></td><td class="note">RSTICK_BTN_PIN</td><td class="label">🕹️ Clic droit</td></tr>
       </table>
-      <div class="section-title">Config joysticks (optionnel)</div>
+      <div class="section-title">Lignes directes (hors connecteurs SP16)</div>
       <table>
         <tr><th>GPIO</th><th>DEFINE</th><th>FONCTION</th></tr>
-        <tr><td><span class="pin pin-gpio">GPIO 16</span></td><td class="note">BTN_LEFT_SWAP_PIN</td><td class="label">Swap X/Y G</td></tr>
-        <tr><td><span class="pin pin-gpio">GPIO 17</span></td><td class="note">BTN_LEFT_INVERT_PIN</td><td class="label">Inv. sens G</td></tr>
-        <tr><td><span class="pin pin-gpio">GPIO 18</span></td><td class="note">BTN_RIGHT_SWAP_PIN</td><td class="label">Swap X/Y D</td></tr>
-        <tr><td><span class="pin pin-gpio">GPIO 19</span></td><td class="note">BTN_RIGHT_INVERT_PIN</td><td class="label">Inv. sens D</td></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 16</span></td><td class="note">PIN_CONFIG_MODE</td><td class="label">GND au démarrage → mode WiFi</td></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 17–19</span></td><td class="note">—</td><td class="label">Réservés, non lus par le firmware</td></tr>
       </table>
       <div class="note-box">Boutons vers <b>GND</b> — pull-up interne ESP32</div>
     </div>
@@ -171,7 +169,7 @@
         <tr><td><span class="pin pin-pwr">3.3V</span></td><td colspan="2" class="note">VCC joystick</td></tr>
         <tr><td><span class="pin pin-gnd">GND</span></td><td colspan="2" class="note">GND joystick</td></tr>
       </table>
-      <div class="warn-box">⚠ GPIO 34/35 : input only, pas de pull-up<br>⚠ ADC2 (GPIO25/26) inutilisable en analogique avec BLE</div>
+      <div class="warn-box">⚠ GPIO 34/35 : entrées uniquement, sans pull-up interne<br>GPIO25/26 sont utilisés en entrées numériques pour les clics L3/R3.</div>
     </div>
   </div>
 
@@ -180,7 +178,7 @@
     <div class="card-header c-teal">
       <span class="icon">💡</span>
       <span class="title">LEDs</span>
-      <span class="chip c-teal">GPIO + PWM</span>
+      <span class="chip c-teal">SORTIES GPIO</span>
     </div>
     <div class="card-body">
       <div class="section-title">LEDs Joueur (1-4)</div>
@@ -194,7 +192,7 @@
       <div class="section-title">LED HOME</div>
       <table>
         <tr><th>GPIO</th><th>DEFINE</th><th>LED</th></tr>
-        <tr><td><span class="pin pin-pwm">GPIO 15</span></td><td class="note">LED_HOME_PIN</td><td class="label">HOME (PWM)</td></tr>
+        <tr><td><span class="pin pin-gpio">GPIO 15</span></td><td class="note">LED_HOME_PIN</td><td class="label">LED HOME</td></tr>
       </table>
       <div class="note-box">
         LEDs avec <b>résistance intégrée</b> 3-6V<br>
@@ -208,7 +206,7 @@
     <div class="card-header c-orange">
       <span class="icon">📳</span>
       <span class="title">Vibration — BC547</span>
-      <span class="chip c-orange">PWM GPIO 4 → 5V</span>
+      <span class="chip c-orange">GPIO 4 → TRANSISTOR → 5V</span>
     </div>
     <div class="card-body">
       <table>
@@ -266,6 +264,61 @@
     </div>
   </div>
 
+  <!-- Faisceaux SP16 -->
+  <div class="card full">
+    <div class="card-header c-teal">
+      <span class="icon">🔌</span>
+      <span class="title">Faisceaux — JST 8 broches vers SP16-9F</span>
+      <span class="chip c-teal">6 × CONNECTEURS RONDS</span>
+    </div>
+    <div class="card-body">
+      <div class="note-box">
+        Le tableau donne le chemin complet <b>fonction → JST de la carte → connecteur rond SP16 → numéro de fil</b>. Les fils 3 à 6 sont normalisés entre les faisceaux : un même numéro porte les fonctions regroupées ci-dessous. La broche 9 reste réservée. Vérifier le repère mécanique <b>1</b> du SP16 avant sertissage.
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="section-title">J1 → SP16-1 — Direction</div>
+          <table><tr><th>JST carte</th><th>SP16 / fil</th><th>SIGNAL</th></tr>
+            <tr><td>1</td><td>1</td><td>3.3V</td></tr><tr><td>2</td><td>2</td><td>GND</td></tr>
+            <tr><td>3</td><td>6</td><td>D-Pad bas (MCP GPB7)</td></tr><tr><td>4</td><td>4</td><td>D-Pad haut (MCP GPB6)</td></tr>
+            <tr><td>5</td><td>3</td><td>D-Pad droite (MCP GPB3)</td></tr><tr><td>6</td><td>5</td><td>D-Pad gauche (MCP GPB2)</td></tr>
+            <tr><td>7–8</td><td>7–8</td><td>Réservé</td></tr><tr><td>—</td><td>9</td><td>Réservé</td></tr></table>
+          <div class="section-title">J2 → SP16-2 — Système</div>
+          <table><tr><th>JST carte</th><th>SP16 / fil</th><th>SIGNAL</th></tr>
+            <tr><td>1</td><td>1</td><td>3.3V</td></tr><tr><td>2</td><td>2</td><td>GND</td></tr>
+            <tr><td>3</td><td>6</td><td>Capture (MCP GPB5)</td></tr><tr><td>4</td><td>3</td><td>Home (MCP GPB4)</td></tr>
+            <tr><td>5</td><td>4</td><td>Plus (MCP GPB1)</td></tr><tr><td>6</td><td>5</td><td>Minus (MCP GPB0)</td></tr>
+            <tr><td>7–8</td><td>7–8</td><td>Réservé</td></tr><tr><td>—</td><td>9</td><td>Réservé</td></tr></table>
+          <div class="section-title">J3 → SP16-3 — ABXY</div>
+          <table><tr><th>JST carte</th><th>SP16 / fil</th><th>SIGNAL</th></tr>
+            <tr><td>1</td><td>1</td><td>3.3V</td></tr><tr><td>2</td><td>2</td><td>GND</td></tr>
+            <tr><td>3</td><td>3</td><td>A (MCP GPA0)</td></tr><tr><td>4</td><td>6</td><td>B (MCP GPA1)</td></tr>
+            <tr><td>5</td><td>4</td><td>X (MCP GPA2)</td></tr><tr><td>6</td><td>5</td><td>Y (MCP GPA3)</td></tr>
+            <tr><td>7–8</td><td>7–8</td><td>Réservé</td></tr><tr><td>—</td><td>9</td><td>Réservé</td></tr></table>
+        </div>
+        <div>
+          <div class="section-title">J4 → SP16-4 — Gâchettes</div>
+          <table><tr><th>JST carte</th><th>SP16 / fil</th><th>SIGNAL</th></tr>
+            <tr><td>1</td><td>1</td><td>3.3V</td></tr><tr><td>2</td><td>2</td><td>GND</td></tr>
+            <tr><td>3</td><td>5</td><td>L (MCP GPA4)</td></tr><tr><td>4</td><td>4</td><td>R (MCP GPA5)</td></tr>
+            <tr><td>5</td><td>6</td><td>ZL (MCP GPA6)</td></tr><tr><td>6</td><td>3</td><td>ZR (MCP GPA7)</td></tr>
+            <tr><td>7–8</td><td>7–8</td><td>Réservé</td></tr><tr><td>—</td><td>9</td><td>Réservé</td></tr></table>
+          <div class="section-title">J5 → SP16-5 — Joystick droit</div>
+          <table><tr><th>JST carte</th><th>SP16 / fil</th><th>SIGNAL</th></tr>
+            <tr><td>1</td><td>1</td><td>3.3V</td></tr><tr><td>2</td><td>2</td><td>GND</td></tr>
+            <tr><td>3</td><td>4</td><td>RX → GPIO32</td></tr><tr><td>4</td><td>3</td><td>RY → GPIO33</td></tr>
+            <tr><td>5</td><td>5</td><td>R3 → GPIO26</td></tr><tr><td>6–8</td><td>6–8</td><td>Réservé</td></tr><tr><td>—</td><td>9</td><td>Réservé</td></tr></table>
+          <div class="section-title">J6 → SP16-6 — Joystick gauche</div>
+          <table><tr><th>JST carte</th><th>SP16 / fil</th><th>SIGNAL</th></tr>
+            <tr><td>1</td><td>1</td><td>3.3V</td></tr><tr><td>2</td><td>2</td><td>GND</td></tr>
+            <tr><td>3</td><td>3</td><td>LX → GPIO34</td></tr><tr><td>4</td><td>4</td><td>LY → GPIO35</td></tr>
+            <tr><td>5</td><td>5</td><td>L3 → GPIO25</td></tr><tr><td>6–8</td><td>6–8</td><td>Réservé</td></tr><tr><td>—</td><td>9</td><td>Réservé</td></tr></table>
+        </div>
+      </div>
+      <div class="warn-box">GPIO16–19 et les cinq LEDs restent sur des fils directs dans le PCB actuel. Ils ne font pas partie de ces six faisceaux SP16.</div>
+    </div>
+  </div>
+
   <!-- Récap complet -->
   <div class="card full">
     <div class="card-header c-teal">
@@ -280,10 +333,10 @@
           <tr><td><span class="pin pin-i2c">GPIO 22</span></td><td class="note">I2C_SCL</td><td class="label">I²C SCL → MCP23017</td><td class="note">I2C</td></tr>
           <tr><td><span class="pin pin-gpio">GPIO 25</span></td><td class="note">LSTICK_BTN_PIN</td><td class="label">🕹️ Clic joystick gauche</td><td class="note">INPUT_PULLUP</td></tr>
           <tr><td><span class="pin pin-gpio">GPIO 26</span></td><td class="note">RSTICK_BTN_PIN</td><td class="label">🕹️ Clic joystick droit</td><td class="note">INPUT_PULLUP</td></tr>
-          <tr><td><span class="pin pin-gpio">GPIO 16</span></td><td class="note">BTN_LEFT_SWAP_PIN</td><td class="label">Config swap X/Y gauche</td><td class="note">INPUT_PULLUP</td></tr>
-          <tr><td><span class="pin pin-gpio">GPIO 17</span></td><td class="note">BTN_LEFT_INVERT_PIN</td><td class="label">Config invert gauche</td><td class="note">INPUT_PULLUP</td></tr>
-          <tr><td><span class="pin pin-gpio">GPIO 18</span></td><td class="note">BTN_RIGHT_SWAP_PIN</td><td class="label">Config swap X/Y droit</td><td class="note">INPUT_PULLUP</td></tr>
-          <tr><td><span class="pin pin-gpio">GPIO 19</span></td><td class="note">BTN_RIGHT_INVERT_PIN</td><td class="label">Config invert droit</td><td class="note">INPUT_PULLUP</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 16</span></td><td class="note">PIN_CONFIG_MODE</td><td class="label">Mode configuration au démarrage</td><td class="note">INPUT_PULLUP</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 17</span></td><td class="note">—</td><td class="label">Réservé</td><td class="note">—</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 18</span></td><td class="note">—</td><td class="label">Réservé</td><td class="note">—</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 19</span></td><td class="note">—</td><td class="label">Réservé</td><td class="note">—</td></tr>
           <tr><td><span class="pin pin-adc">GPIO 34</span></td><td class="note">STICK_LX_PIN</td><td class="label">Joystick gauche X</td><td class="note">ADC1_CH6</td></tr>
           <tr><td><span class="pin pin-adc">GPIO 35</span></td><td class="note">STICK_LY_PIN</td><td class="label">Joystick gauche Y</td><td class="note">ADC1_CH7</td></tr>
         </table>
@@ -295,8 +348,8 @@
           <tr><td><span class="pin pin-gpio">GPIO 14</span></td><td class="note">LED_2</td><td class="label">LED joueur 2</td><td class="note">OUTPUT</td></tr>
           <tr><td><span class="pin pin-gpio">GPIO 12</span></td><td class="note">LED_3</td><td class="label">LED joueur 3</td><td class="note">OUTPUT</td></tr>
           <tr><td><span class="pin pin-gpio">GPIO 13</span></td><td class="note">LED_4</td><td class="label">LED joueur 4</td><td class="note">OUTPUT</td></tr>
-          <tr><td><span class="pin pin-pwm">GPIO 15</span></td><td class="note">LED_HOME_PIN</td><td class="label">LED HOME</td><td class="note">PWM</td></tr>
-          <tr><td><span class="pin pin-pwm">GPIO 4</span></td><td class="note">VIBRATION_PIN</td><td class="label">Moteur vibrant → BC547</td><td class="note">PWM</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 15</span></td><td class="note">LED_HOME_PIN</td><td class="label">LED HOME</td><td class="note">OUTPUT</td></tr>
+          <tr><td><span class="pin pin-gpio">GPIO 4</span></td><td class="note">VIBRATION_PIN</td><td class="label">Moteur vibrant → BC547</td><td class="note">OUTPUT</td></tr>
           <tr><td><span class="pin pin-adc">GPIO 36</span></td><td class="note">BATTERY_PIN</td><td class="label">Mesure batterie</td><td class="note">ADC1_CH0</td></tr>
         </table>
       </div>
@@ -315,7 +368,6 @@
         <tr><td><span class="pin pin-adc">ADC</span></td><td class="note">Entrée analogique 12-bit</td></tr>
         <tr><td><span class="pin pin-i2c">I²C</span></td><td class="note">Bus données I²C</td></tr>
         <tr><td><span class="pin pin-mcp">MCP</span></td><td class="note">Pin MCP23017</td></tr>
-        <tr><td><span class="pin pin-pwm">PWM</span></td><td class="note">Sortie analogWrite</td></tr>
         <tr><td><span class="pin pin-pwr">3.3V</span></td><td class="note">Alimentation 3.3V</td></tr>
         <tr><td><span class="pin pin-5v">5V</span></td><td class="note">Alimentation 5V (LiPo Rider)</td></tr>
         <tr><td><span class="pin pin-gnd">GND</span></td><td class="note">Masse commune</td></tr>

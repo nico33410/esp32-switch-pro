@@ -37,11 +37,14 @@
 #define PIN_LSTICK_BTN  25
 #define PIN_RSTICK_BTN  26
 
-// Boutons de configuration axes joystick (du schéma, actif bas)
-#define PIN_LSTICK_SWAP 16   // Swap X/Y joystick gauche
-#define PIN_LSTICK_INV  17   // Inverser axe joystick gauche
-#define PIN_RSTICK_SWAP 18   // Swap X/Y joystick droit
-#define PIN_RSTICK_INV  19   // Inverser axe joystick droit
+// Mode configuration — GPIO 16 actif bas au démarrage → serveur web
+#define PIN_CONFIG_MODE 16
+
+// WiFi AP (mode configuration). Change this password before using the
+// controller outside a trusted environment.
+#define WIFI_AP_SSID    "ProCon-Setup"
+#define WIFI_AP_PASS    "ChangeThis-42"
+#define WIFI_AP_CHANNEL 1
 
 // ============================================================
 // Joysticks — ADC1 uniquement (ADC2 incompatible Bluetooth)
@@ -53,8 +56,9 @@
 #define ADC_RX          ADC1_CHANNEL_4   // GPIO 32
 #define ADC_RY          ADC1_CHANNEL_5   // GPIO 33
 
-// Zone morte centre (0 = désactivé, 200 = recommandé)
+// Zone morte après centrage automatique au démarrage (0 = désactivée)
 #define STICK_DEADZONE  100
+#define STICK_CENTER_SAMPLES 64
 
 // ============================================================
 // LEDs joueur (1-4) et LED HOME
@@ -80,13 +84,16 @@
 
 #define ADC_BATTERY     ADC1_CHANNEL_0   // GPIO 36
 
-// Seuils ADC bruts (0–4095) pour pont diviseur 100k/100k sur LiPo 3.7V
-// Ajustez selon votre montage (mesurez Vbat divisée sur le GPIO)
-#define BAT_ADC_FULL    3900    // > 3900 → niveau 8/8
-#define BAT_ADC_HIGH    3600    // > 3600 → niveau 6/8
-#define BAT_ADC_MID     3300    // > 3300 → niveau 4/8
-#define BAT_ADC_LOW     2800    // > 2800 → niveau 2/8
-                                // sinon  → niveau 1/8 (vide)
+// Pont diviseur R1=10 kΩ / R2=10 kΩ : tension GPIO = VBAT / 2.
+// Les seuils sont exprimés en mV de batterie, après conversion ADC calibrée.
+#define BAT_DIVIDER_NUMERATOR   2
+#define BAT_MV_FULL          4100
+#define BAT_MV_HIGH          3850
+#define BAT_MV_MID           3650
+#define BAT_MV_LOW           3450
+
+// GPIO12 et GPIO15 sont des broches de strapping de l'ESP32. Les LED qui y
+// sont raccordées ne doivent pas forcer un niveau logique pendant le reset.
 
 // ============================================================
 // Couleurs manette (affichées dans l'UI Nintendo Switch)

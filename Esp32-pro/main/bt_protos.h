@@ -30,6 +30,8 @@ void spi_handle_read(uint8_t seg, uint8_t addr, uint8_t len,
 
 // ── bt_input.c ────────────────────────────────────────────────
 void input_calibrate_sticks(void);
+void input_capture_stick_centers(void);
+void input_center_sticks(uint16_t *lx, uint16_t *ly, uint16_t *rx, uint16_t *ry);
 void input_fill_long(uint8_t *report);
 void input_encode_sticks(uint8_t *out6,
                          uint16_t lx, uint16_t ly,
@@ -41,6 +43,7 @@ rb_err_t bt_start(void);
 // ── main.c ────────────────────────────────────────────────────
 void leds_set_player(uint8_t mask);
 void vibration_start(uint32_t ms);
+void vibration_stop(void);
 
 // ── Niveau batterie (défini dans main.c) ──────────────────────
 extern uint8_t g_battery_level;

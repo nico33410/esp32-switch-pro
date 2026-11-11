@@ -7,9 +7,17 @@ idf_component_register(
         "bt_spi.c"
         "bt_input.c"
         "bt_settings.c"
+        "btn_mapping.c"
+        "web_config.c"
     INCLUDE_DIRS "."
     REQUIRES
         driver
         nvs_flash
         bt
+        esp_wifi
+        esp_netif
+        esp_event
+        esp_http_server
+        esp_adc_cal
+        json
 )

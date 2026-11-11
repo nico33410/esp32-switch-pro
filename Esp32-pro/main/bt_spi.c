@@ -5,8 +5,6 @@
  */
 #include "bt_types.h"
 
-#define SPI_OUT_IDX 20
-
 static uint8_t spi_byte(uint8_t seg, uint8_t addr) {
     switch (seg) {
 
@@ -81,17 +79,19 @@ static uint8_t spi_byte(uint8_t seg, uint8_t addr) {
 // Appelé par bt_comms.c sur sous-commande 0x10 (SPI Read)
 void spi_handle_read(uint8_t seg, uint8_t addr, uint8_t len,
                      uint8_t* report, uint16_t* report_size) {
+    const uint8_t max_len = 30;
+    if (len > max_len) len = max_len;
     // Écho de l'adresse demandée dans le rapport
-    report[15] = addr;
-    report[16] = seg;
-    report[19] = len;
+    report[RPT_SPI_ADDR] = addr;
+    report[RPT_SPI_SEG]  = seg;
+    report[RPT_SPI_LEN]  = len;
     *report_size += 5;
 
     uint8_t data[30] = {};
-    for (int i = 0; i < len && i < 30; i++)
+    for (int i = 0; i < len; i++)
         data[i] = spi_byte(seg, addr + i);
 
     *report_size += len;
     for (int i = 0; i < len; i++)
-        report[SPI_OUT_IDX + i] = data[i];
+        report[RPT_SPI_DATA + i] = data[i];
 }
